@@ -1,0 +1,65 @@
+{
+  "version": "1.0",
+  "nodes": [
+    { "id": "variable", "label": "变量", "module": "basics", "level": 1 },
+    { "id": "data_type", "label": "数据类型", "module": "basics", "level": 1 },
+    { "id": "operator", "label": "运算符", "module": "basics", "level": 1 },
+    { "id": "expression", "label": "表达式", "module": "basics", "level": 1 },
+    { "id": "if_else", "label": "条件判断", "module": "condition", "level": 2 },
+    { "id": "switch_case", "label": "分支选择", "module": "condition", "level": 2 },
+    { "id": "for_loop", "label": "for循环", "module": "loop", "level": 2 },
+    { "id": "while_loop", "label": "while循环", "module": "loop", "level": 2 },
+    { "id": "loop_control", "label": "循环控制", "module": "loop", "level": 3 },
+    { "id": "array_decl", "label": "数组声明", "module": "array", "level": 2 },
+    { "id": "array_traversal", "label": "数组遍历", "module": "array", "level": 3 },
+    { "id": "array_sort", "label": "数组排序", "module": "array", "level": 4 },
+    { "id": "string_basic", "label": "字符串基础", "module": "string", "level": 2 },
+    { "id": "string_methods", "label": "字符串方法", "module": "string", "level": 3 },
+    { "id": "function_def", "label": "函数定义", "module": "function", "level": 3 },
+    { "id": "function_params", "label": "函数参数", "module": "function", "level": 3 },
+    { "id": "recursion", "label": "递归", "module": "function", "level": 5 },
+    { "id": "class_def", "label": "类定义", "module": "class", "level": 4 },
+    { "id": "inheritance", "label": "继承", "module": "class", "level": 5 },
+    { "id": "io_console", "label": "控制台IO", "module": "io", "level": 2 },
+    { "id": "io_file", "label": "文件IO", "module": "io", "level": 4 }
+  ],
+  "edges": [
+    { "from": "variable", "to": "data_type", "type": "requires", "weight": 1.0 },
+    { "from": "variable", "to": "operator", "type": "requires", "weight": 1.0 },
+    { "from": "data_type", "to": "expression", "type": "requires", "weight": 0.8 },
+    { "from": "operator", "to": "expression", "type": "requires", "weight": 0.8 },
+    { "from": "expression", "to": "if_else", "type": "requires", "weight": 1.0 },
+    { "from": "if_else", "to": "switch_case", "type": "enhances", "weight": 0.6 },
+    { "from": "if_else", "to": "for_loop", "type": "requires", "weight": 0.9 },
+    { "from": "expression", "to": "while_loop", "type": "requires", "weight": 0.9 },
+    { "from": "for_loop", "to": "loop_control", "type": "enhances", "weight": 0.7 },
+    { "from": "while_loop", "to": "loop_control", "type": "enhances", "weight": 0.7 },
+    { "from": "data_type", "to": "array_decl", "type": "requires", "weight": 1.0 },
+    { "from": "for_loop", "to": "array_traversal", "type": "requires", "weight": 1.0 },
+    { "from": "array_traversal", "to": "array_sort", "type": "requires", "weight": 0.8 },
+    { "from": "data_type", "to": "string_basic", "type": "requires", "weight": 1.0 },
+    { "from": "string_basic", "to": "string_methods", "type": "enhances", "weight": 0.7 },
+    { "from": "variable", "to": "function_def", "type": "requires", "weight": 0.9 },
+    { "from": "expression", "to": "function_params", "type": "requires", "weight": 0.9 },
+    { "from": "function_def", "to": "recursion", "type": "enhances", "weight": 0.5 },
+    { "from": "for_loop", "to": "recursion", "type": "enhances", "weight": 0.6 },
+    { "from": "function_def", "to": "class_def", "type": "requires", "weight": 1.0 },
+    { "from": "class_def", "to": "inheritance", "type": "enhances", "weight": 0.7 },
+    { "from": "string_basic", "to": "io_console", "type": "requires", "weight": 0.8 },
+    { "from": "array_decl", "to": "io_file", "type": "requires", "weight": 0.9 },
+    { "from": "io_console", "to": "io_file", "type": "enhances", "weight": 0.6 }
+  ],
+  "learningPaths": {
+    "beginner": [
+      "variable", "data_type", "operator", "expression",
+      "if_else", "for_loop", "array_decl", "io_console"
+    ],
+    "intermediate": [
+      "while_loop", "loop_control", "array_traversal",
+      "string_basic", "string_methods", "function_def", "function_params"
+    ],
+    "advanced": [
+      "array_sort", "recursion", "class_def", "inheritance", "io_file"
+    ]
+  }
+}

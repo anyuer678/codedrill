@@ -1,0 +1,146 @@
+{
+  "language": "JavaScript",
+  "module": "string",
+  "questions": [
+    {
+      "id": "js_str_001",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "const str = 'Hello, World!';\nconsole.log(str.length);\nconsole.log(str.toUpperCase());\nconsole.log(str.toLowerCase());",
+      "explanation": "基本字符串方法"
+    },
+    {
+      "id": "js_str_002",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "const str = 'Hello, World!';\nconsole.log(str.slice(0, 5));\nconsole.log(str.substring(7, 12));\nconsole.log(str.indexOf('World'));",
+      "explanation": "截取与查找"
+    },
+    {
+      "id": "js_str_003",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function reverseString(str) {\n    return str.split('').reverse().join('');\n}",
+      "explanation": "字符串反转"
+    },
+    {
+      "id": "js_str_004",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function countChar(str, char) {\n    return str.split('').filter(c => c === char).length;\n}",
+      "explanation": "字符计数"
+    },
+    {
+      "id": "js_str_005",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "const name = 'Alice';\nconst greeting = `Hello, ${name}!`;\nconsole.log(greeting);",
+      "explanation": "模板字符串"
+    },
+    {
+      "id": "js_str_006",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function capitalize(str) {\n    return str.charAt(0).toUpperCase() + str.slice(1);\n}",
+      "explanation": "首字母大写"
+    },
+    {
+      "id": "js_str_007",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function camelize(str) {\n    return str.replace(/-([a-z])/g, (_, c) => c.toUpperCase());\n}",
+      "explanation": "连字符转驼峰"
+    },
+    {
+      "id": "js_str_008",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function truncate(str, maxLength) {\n    if (str.length <= maxLength) return str;\n    return str.slice(0, maxLength - 3) + '...';\n}",
+      "explanation": "字符串截断"
+    },
+    {
+      "id": "js_str_009",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function isAnagram(str1, str2) {\n    const sort = s => s.toLowerCase().split('').sort().join('');\n    return sort(str1) === sort(str2);\n}",
+      "explanation": "变位词判断"
+    },
+    {
+      "id": "js_str_010",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "const csv = 'apple,banana,cherry';\nconst fruits = csv.split(',');\nconst joined = fruits.join(' | ');",
+      "explanation": "split和join"
+    },
+    {
+      "id": "js_str_011",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function repeat(str, n) {\n    return str.repeat(n);\n}",
+      "explanation": "字符串重复"
+    },
+    {
+      "id": "js_str_012",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function padLeft(str, length, char = ' ') {\n    return str.padStart(length, char);\n}",
+      "explanation": "左侧填充"
+    },
+    {
+      "id": "js_str_013",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function replaceAll(str, search, replacement) {\n    return str.split(search).join(replacement);\n}",
+      "explanation": "全部替换"
+    },
+    {
+      "id": "js_str_014",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "function longestCommonPrefix(strs) {\n    if (strs.length === 0) return '';\n    let prefix = strs[0];\n    for (let i = 1; i < strs.length; i++) {\n        while (strs[i].indexOf(prefix) !== 0) {\n            prefix = prefix.slice(0, -1);\n        }\n    }\n    return prefix;\n}",
+      "explanation": "最长公共前缀"
+    },
+    {
+      "id": "js_str_015",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function countWords(str) {\n    return str.trim().split(/\\s+/).length;\n}",
+      "explanation": "单词计数"
+    },
+    {
+      "id": "js_str_016",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function escapeHtml(str) {\n    const map = {\n        '&': '&amp;',\n        '<': '&lt;',\n        '>': '&gt;',\n        '\"': '&quot;',\n        \"'\": '&#39;'\n    };\n    return str.replace(/[&<>\"']/g, c => map[c]);\n}",
+      "explanation": "HTML转义"
+    },
+    {
+      "id": "js_str_017",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function toKebabCase(str) {\n    return str\n        .replace(/([a-z])([A-Z])/g, '$1-$2')\n        .replace(/[\\s_]+/g, '-')\n        .toLowerCase();\n}",
+      "explanation": "转连字符命名"
+    },
+    {
+      "id": "js_str_018",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function substringBetween(str, start, end) {\n    const s = str.indexOf(start);\n    const e = str.indexOf(end, s + start.length);\n    if (s === -1 || e === -1) return '';\n    return str.substring(s + start.length, e);\n}",
+      "explanation": "提取子串"
+    },
+    {
+      "id": "js_str_019",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "function isMatch(str, pattern) {\n    const dp = Array(str.length + 1).fill(null)\n        .map(() => Array(pattern.length + 1).fill(false));\n    dp[0][0] = true;\n    for (let j = 1; j <= pattern.length; j++) {\n        if (pattern[j - 1] === '*') dp[0][j] = dp[0][j - 2];\n    }\n    for (let i = 1; i <= str.length; i++) {\n        for (let j = 1; j <= pattern.length; j++) {\n            if (pattern[j - 1] === '*') {\n                dp[i][j] = dp[i][j - 2] ||\n                    (str[i-1] === pattern[j-2] || pattern[j-2] === '.') && dp[i-1][j];\n            } else {\n                dp[i][j] = dp[i-1][j-1] &&\n                    (pattern[j-1] === '.' || str[i-1] === pattern[j-1]);\n            }\n        }\n    }\n    return dp[str.length][pattern.length];\n}",
+      "explanation": "正则匹配（动态规划）"
+    },
+    {
+      "id": "js_str_020",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function parseQueryString(qs) {\n    return qs.slice(1).split('&').reduce((params, pair) => {\n        const [key, value] = pair.split('=');\n        params[decodeURIComponent(key)] = decodeURIComponent(value || '');\n        return params;\n    }, {});\n}",
+      "explanation": "解析查询字符串"
+    }
+  ]
+}

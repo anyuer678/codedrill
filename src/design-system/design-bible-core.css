@@ -1,0 +1,337 @@
+/* =========================================================
+ * Design Bible V1 — 核心（共享）
+ * 钢笔速写 + 淡彩插画 | 空间 > 氛围 > 内容 > 功能
+ * 四个项目共用此核心，再叠加各自世界观主题
+ * ========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+::-webkit-scrollbar { width: 0; height: 0; }
+
+body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background-color: var(--paper);
+    /* 纸张纹理：3-8% 透明度的羊皮纸噪点 */
+    background-image:
+        radial-gradient(ellipse 200% 100% at 30% 20%, rgba(139,116,72,0.04) 0%, transparent 50%),
+        radial-gradient(ellipse 200% 100% at 70% 80%, rgba(139,116,72,0.04) 0%, transparent 50%),
+        radial-gradient(circle 600px at 20% 100%, rgba(139,116,72,0.025) 0%, transparent 70%),
+        radial-gradient(circle 600px at 100% 0%, rgba(139,116,72,0.025) 0%, transparent 70%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0.18  0 0 0 0 0.14  0 0 0 0 0.08  0 0 0 0.05 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");
+    background-attachment: fixed;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+a { color: var(--ink); text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+/* =========================================================
+ * 字体类（≤3种字体）
+ * ========================================================= */
+.font-display { font-family: var(--font-display); letter-spacing: 0.02em; }
+.font-mono { font-family: var(--font-mono); letter-spacing: 0; }
+.font-eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: 0.005em;
+}
+h1 { font-size: 36px; }
+h2 { font-size: 26px; }
+h3 { font-size: 18px; }
+h4 { font-size: 15px; }
+
+/* =========================================================
+ * 1. 纸张系统（不同卡片不同纸张）
+ * ========================================================= */
+.paper-parchment { background: var(--paper); }
+.paper-vellum { background: var(--paper-card); }
+.paper-card {
+    background: var(--paper-card);
+    border: 1px solid var(--paper-line);
+    border-radius: var(--r-card);
+}
+.paper-archive {
+    background: var(--paper-archive, var(--paper-card));
+    border: 1px solid var(--paper-line);
+    border-radius: var(--r-bg);
+    box-shadow: var(--shadow-1);
+}
+.paper-tag {
+    background: var(--paper-tag, var(--paper-warm));
+    border: 1px solid var(--paper-line);
+    border-radius: var(--r-tag);
+    padding: 4px 10px;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+}
+
+/* =========================================================
+ * 2. 圆角层级（不要统一）
+ * ========================================================= */
+.r-tag { border-radius: var(--r-tag); }
+.r-input { border-radius: var(--r-input); }
+.r-btn { border-radius: var(--r-btn); }
+.r-card { border-radius: var(--r-card); }
+.r-bg { border-radius: var(--r-bg); }
+.r-circle { border-radius: 50%; }
+
+/* =========================================================
+ * 3. 按钮 - 像纸签
+ * ========================================================= */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 10px 20px;
+    border-radius: var(--r-btn);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--dur-fast) var(--ease-paper);
+    background: var(--paper-card);
+    color: var(--ink);
+    border: 1px solid var(--paper-line);
+}
+.btn:hover { background: var(--paper-warm); border-color: var(--ink-soft); }
+.btn:active { transform: translateY(1px); }
+.btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+}
+.btn-primary:hover { background: var(--ink-soft); }
+.btn-ghost {
+    background: transparent;
+    border: 1px dashed var(--paper-line);
+}
+.btn-icon {
+    width: 40px; height: 40px;
+    padding: 0;
+    border-radius: var(--r-input);
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--ink-soft);
+}
+.btn-icon:hover { background: var(--paper-warm); color: var(--ink); }
+
+/* =========================================================
+ * 4. 进度环 - 钢笔弧线
+ * ========================================================= */
+.progress-ring {
+    position: relative;
+    display: inline-block;
+}
+.progress-ring-svg {
+    transform: rotate(-90deg);
+    display: block;
+}
+.progress-ring-track {
+    fill: none;
+    stroke: var(--paper-line);
+    stroke-width: 6;
+}
+.progress-ring-fill {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dashoffset var(--dur-slow) var(--ease-paper);
+}
+.progress-ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+}
+
+/* =========================================================
+ * 5. 进度条
+ * ========================================================= */
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--paper-warm);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.progress-bar-fill {
+    height: 100%;
+    background: var(--ink);
+    border-radius: 3px;
+    transition: width var(--dur-med) var(--ease-paper);
+}
+
+/* =========================================================
+ * 6. 标签
+ * ========================================================= */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: var(--r-tag);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    border: 1px solid var(--paper-line);
+}
+.tag-green { background: var(--accent-green-soft); color: var(--accent-green); border-color: var(--accent-green); }
+.tag-wine { background: var(--accent-wine-soft); color: var(--accent-wine); border-color: var(--accent-wine); }
+.tag-copper { background: var(--accent-copper-soft); color: var(--accent-copper); border-color: var(--accent-copper); }
+.tag-slate { background: var(--accent-slate-soft); color: var(--accent-slate); border-color: var(--accent-slate); }
+
+/* =========================================================
+ * 7. 模态框 - 像翻开一张纸
+ * ========================================================= */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(44, 36, 24, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+.modal.open { display: flex; }
+.modal-content {
+    background: var(--paper-card);
+    border: 1px solid var(--paper-line);
+    border-radius: var(--r-bg);
+    max-width: 480px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: var(--s-7);
+    box-shadow: var(--shadow-3);
+}
+
+/* =========================================================
+ * 8. 动画 - 像纸张（不是游戏）
+ * ========================================================= */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes paperUnfold {
+    from { opacity: 0; transform: scale(0.95) translateY(8px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.fade-in { animation: fadeIn var(--dur-med) var(--ease-paper); }
+.paper-unfold { animation: paperUnfold var(--dur-slow) var(--ease-paper); }
+.slide-up { animation: slideUp var(--dur-med) var(--ease-paper); }
+
+/* =========================================================
+ * 9. 通用 SVG 图标基类
+ * ========================================================= */
+.icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    color: currentColor;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.icon-sm { width: 16px; height: 16px; }
+.icon-lg { width: 28px; height: 28px; }
+.icon-xl { width: 40px; height: 40px; }
+
+/* =========================================================
+ * 10. 留白工具类
+ * ========================================================= */
+.gap-1 { gap: var(--s-1); }
+.gap-2 { gap: var(--s-2); }
+.gap-3 { gap: var(--s-3); }
+.gap-4 { gap: var(--s-4); }
+.gap-5 { gap: var(--s-5); }
+.gap-6 { gap: var(--s-6); }
+.gap-7 { gap: var(--s-7); }
+
+.mt-2 { margin-top: var(--s-2); }
+.mt-3 { margin-top: var(--s-3); }
+.mt-4 { margin-top: var(--s-4); }
+.mt-5 { margin-top: var(--s-5); }
+.mt-6 { margin-top: var(--s-6); }
+.mt-7 { margin-top: var(--s-7); }
+
+.mb-2 { margin-bottom: var(--s-2); }
+.mb-3 { margin-bottom: var(--s-3); }
+.mb-4 { margin-bottom: var(--s-4); }
+.mb-5 { margin-bottom: var(--s-5); }
+.mb-6 { margin-bottom: var(--s-6); }
+.mb-7 { margin-bottom: var(--s-7); }
+
+/* =========================================================
+ * 11. 暗色模式（夜读模式）
+ * ========================================================= */
+[data-theme$="-dark"] {
+    --shadow-1: 0 1px 2px rgba(0,0,0,0.3);
+    --shadow-2: 0 2px 8px rgba(0,0,0,0.4);
+    --shadow-3: 0 4px 16px rgba(0,0,0,0.5);
+}
+
+/* =========================================================
+ * 12. 移动端基础
+ * ========================================================= */
+* { -webkit-tap-highlight-color: transparent; }
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overscroll-behavior-y: contain;
+}
+body {
+    -webkit-user-select: none;
+    user-select: none;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+}
+input, textarea, [contenteditable="true"] {
+    -webkit-user-select: text;
+    user-select: text;
+}

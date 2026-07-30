@@ -1,0 +1,21 @@
+{
+  "language": "Linux",
+  "module": "loop",
+  "questions": [
+    {"id": "linux_loop_001", "type": "copy", "difficulty": 1, "code": "for i in 1 2 3 4 5\n  do\n    echo $i\ndone", "explanation": "基础for循环"},
+    {"id": "linux_loop_002", "type": "copy", "difficulty": 1, "code": "i=0\nwhile [ $i -lt 5 ]\n  do\n    echo $i\n    i=$((i + 1))\ndone", "explanation": "while循环"},
+    {"id": "linux_loop_003", "type": "copy", "difficulty": 2, "code": "for file in /tmp/*.txt\n  do\n    if [ -f \"$file\" ]; then\n      echo \"Processing $file\"\n    fi\ndone", "explanation": "遍历文件"},
+    {"id": "linux_loop_004", "type": "copy", "difficulty": 2, "code": "count=0\nfor num in 2 3 5 7 11\n  do\n    count=$((count + num))\ndone\necho \"Sum: $count\"", "explanation": "累加求和"},
+    {"id": "linux_loop_005", "type": "copy", "difficulty": 2, "code": "i=1\nwhile [ $i -le 10 ]\n  do\n    if [ $((i % 2)) -eq 0 ]; then\n      echo \"$i is even\"\n    fi\n    i=$((i + 1))\ndone", "explanation": "条件判断"},
+    {"id": "linux_loop_006", "type": "copy", "difficulty": 3, "code": "find . -name \"*.log\" -type f | while read file\n  do\n    size=$(wc -c < \"$file\")\n    echo \"$file: $size bytes\"\ndone", "explanation": "管道循环"},
+    {"id": "linux_loop_007", "type": "copy", "difficulty": 2, "code": "for i in $(seq 1 5)\n  do\n    for j in $(seq 1 $i)\n      do\n        echo -n \"* \"\n    done\n    echo\ndone", "explanation": "嵌套循环"},
+    {"id": "linux_loop_008", "type": "copy", "difficulty": 3, "code": "arr=(apple banana cherry date elderberry)\nfor fruit in \"${arr[@]}\"\n  do\n    echo \"Fruit: $fruit\"\ndone\necho \"Total: ${#arr[@]}\"", "explanation": "数组遍历"},
+    {"id": "linux_loop_009", "type": "copy", "difficulty": 2, "code": "n=10\na=0\nb=1\nfor i in $(seq 1 $n)\n  do\n    echo -n \"$a \"\n    temp=$((a + b))\n    a=$b\n    b=$temp\ndone\necho", "explanation": "斐波那契数列"},
+    {"id": "linux_loop_010", "type": "copy", "difficulty": 3, "code": "is_prime() {\n  local n=$1\n  if [ $n -le 1 ]; then return 1; fi\n  for ((i=2; i*i<=n; i++))\n    do\n      if [ $((n % i)) -eq 0 ]; then return 1; fi\n  done\n  return 0\n}\n\nfor num in 2 3 4 5 6 7 8 9 10\n  do\n    if is_prime $num; then\n      echo \"$num is prime\"\n    fi\ndone", "explanation": "素数判断函数"},
+    {"id": "linux_loop_011", "type": "copy", "difficulty": 1, "code": "for i in {1..5}\n  do\n    echo \"Number: $i\"\ndone", "explanation": "范围循环"},
+    {"id": "linux_loop_012", "type": "copy", "difficulty": 2, "code": "read -p \"Enter count: \" n\nsum=0\nfor ((i=1; i<=n; i++))\n  do\n    sum=$((sum + i))\ndone\necho \"Sum of 1 to $n: $sum\"", "explanation": "用户输入循环"},
+    {"id": "linux_loop_013", "type": "copy", "difficulty": 3, "code": "process_files() {\n  local dir=$1\n  local count=0\n  for file in \"$dir\"/*\n    do\n      if [ -f \"$file\" ]; then\n        count=$((count + 1))\n      elif [ -d \"$file\" ]; then\n        process_files \"$file\"\n      fi\n  done\n  echo \"$dir: $count files\"\n}\n\nprocess_files /tmp", "explanation": "递归遍历目录"},
+    {"id": "linux_loop_014", "type": "copy", "difficulty": 2, "code": "declare -A scores\nscores[alice]=85\nscores[bob]=92\nscores[charlie]=78\n\nfor name in \"${!scores[@]}\"\n  do\n    echo \"$name: ${scores[$name]}\"\ndone", "explanation": "关联数组遍历"},
+    {"id": "linux_loop_015", "type": "copy", "difficulty": 3, "code": "generate_report() {\n  local lines=()\n  lines+=(\"Report Date: $(date)\")\n  lines+=(\"User: $(whoami)\")\n  lines+=(\"System: $(uname -a)\")\n  \n  for line in \"${lines[@]}\"\n    do\n      echo \"$line\"\n  done\n}\n\ngenerate_report", "explanation": "数组构建与遍历"}
+  ]
+}

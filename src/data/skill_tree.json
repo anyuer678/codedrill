@@ -1,0 +1,170 @@
+{
+  "version": "1.0",
+  "skills": [
+    {
+      "id": "loop",
+      "label": "循环",
+      "icon": "🔄",
+      "maxLevel": 10,
+      "prerequisites": [],
+      "subSkills": [
+        { "id": "for_loop", "label": "for循环" },
+        { "id": "while_loop", "label": "while循环" },
+        { "id": "do_while", "label": "do-while循环" },
+        { "id": "nested_loop", "label": "嵌套循环" },
+        { "id": "loop_control", "label": "break/continue" }
+      ],
+      "levels": {
+        "1": { "title": "入门", "exp": 100, "unlock": "copy" },
+        "2": { "title": "基础", "exp": 300, "unlock": "fill" },
+        "3": { "title": "进阶", "exp": 600, "unlock": "debug" },
+        "4": { "title": "熟练", "exp": 1000, "unlock": "reflex" },
+        "5": { "title": "精通", "exp": 1500, "unlockBoss": true },
+        "6": { "title": "专家", "exp": 2200 },
+        "7": { "title": "大师", "exp": 3000 },
+        "8": { "title": "宗师", "exp": 4000 },
+        "9": { "title": "传说", "exp": 5500 },
+        "10": { "title": "神话", "exp": 8000 }
+      }
+    },
+    {
+      "id": "condition",
+      "label": "条件分支",
+      "icon": "🔀",
+      "maxLevel": 10,
+      "prerequisites": [],
+      "subSkills": [
+        { "id": "if_else", "label": "if-else" },
+        { "id": "if_elseif", "label": "if-else if-else" },
+        { "id": "switch_case", "label": "switch-case" },
+        { "id": "ternary", "label": "三元运算" },
+        { "id": "nested_condition", "label": "嵌套条件" }
+      ],
+      "levels": {
+        "1": { "title": "入门", "exp": 100, "unlock": "copy" },
+        "2": { "title": "基础", "exp": 300, "unlock": "fill" },
+        "3": { "title": "进阶", "exp": 600, "unlock": "debug" },
+        "4": { "title": "熟练", "exp": 1000, "unlock": "reflex" },
+        "5": { "title": "精通", "exp": 1500, "unlockBoss": true }
+      }
+    },
+    {
+      "id": "array",
+      "label": "数组/列表",
+      "icon": "📊",
+      "maxLevel": 10,
+      "prerequisites": ["loop"],
+      "subSkills": [
+        { "id": "declaration", "label": "数组声明" },
+        { "id": "access", "label": "元素访问" },
+        { "id": "traversal", "label": "遍历" },
+        { "id": "search", "label": "查找" },
+        { "id": "sort", "label": "排序" }
+      ],
+      "levels": {
+        "1": { "title": "入门", "exp": 100, "unlock": "copy" },
+        "2": { "title": "基础", "exp": 300, "unlock": "fill" },
+        "3": { "title": "进阶", "exp": 600, "unlock": "debug" },
+        "4": { "title": "熟练", "exp": 1000, "unlock": "reflex" },
+        "5": { "title": "精通", "exp": 1500, "unlockBoss": true }
+      }
+    },
+    {
+      "id": "string",
+      "label": "字符串",
+      "icon": "📝",
+      "maxLevel": 10,
+      "prerequisites": ["array"],
+      "subSkills": [
+        { "id": "declaration", "label": "字符串声明" },
+        { "id": "concatenation", "label": "拼接" },
+        { "id": "methods", "label": "常用方法" },
+        { "id": "regex", "label": "正则表达式" },
+        { "id": "format", "label": "格式化" }
+      ],
+      "levels": {
+        "1": { "title": "入门", "exp": 100, "unlock": "copy" },
+        "2": { "title": "基础", "exp": 300, "unlock": "fill" },
+        "3": { "title": "进阶", "exp": 600, "unlock": "debug" },
+        "4": { "title": "熟练", "exp": 1000, "unlock": "reflex" },
+        "5": { "title": "精通", "exp": 1500, "unlockBoss": true }
+      }
+    },
+    {
+      "id": "function",
+      "label": "函数",
+      "icon": "⚡",
+      "maxLevel": 10,
+      "prerequisites": ["condition"],
+      "subSkills": [
+        { "id": "definition", "label": "函数定义" },
+        { "id": "parameters", "label": "参数传递" },
+        { "id": "return", "label": "返回值" },
+        { "id": "recursion", "label": "递归" },
+        { "id": "lambda", "label": "匿名函数" }
+      ],
+      "levels": {
+        "1": { "title": "入门", "exp": 100, "unlock": "copy" },
+        "2": { "title": "基础", "exp": 300, "unlock": "fill" },
+        "3": { "title": "进阶", "exp": 600, "unlock": "debug" },
+        "4": { "title": "熟练", "exp": 1000, "unlock": "reflex" },
+        "5": { "title": "精通", "exp": 1500, "unlockBoss": true }
+      }
+    },
+    {
+      "id": "class",
+      "label": "类与对象",
+      "icon": "🏗️",
+      "maxLevel": 10,
+      "prerequisites": ["function"],
+      "subSkills": [
+        { "id": "definition", "label": "类定义" },
+        { "id": "constructor", "label": "构造函数" },
+        { "id": "methods", "label": "成员方法" },
+        { "id": "inheritance", "label": "继承" },
+        { "id": "polymorphism", "label": "多态" }
+      ],
+      "levels": {
+        "1": { "title": "入门", "exp": 200, "unlock": "copy" },
+        "2": { "title": "基础", "exp": 500, "unlock": "fill" },
+        "3": { "title": "进阶", "exp": 900, "unlock": "debug" },
+        "4": { "title": "熟练", "exp": 1400, "unlock": "reflex" },
+        "5": { "title": "精通", "exp": 2000, "unlockBoss": true }
+      }
+    },
+    {
+      "id": "io",
+      "label": "输入输出",
+      "icon": "📥",
+      "maxLevel": 10,
+      "prerequisites": ["string"],
+      "subSkills": [
+        { "id": "console_io", "label": "控制台IO" },
+        { "id": "file_io", "label": "文件IO" },
+        { "id": "stream", "label": "流操作" },
+        { "id": "serialization", "label": "序列化" }
+      ],
+      "levels": {
+        "1": { "title": "入门", "exp": 100, "unlock": "copy" },
+        "2": { "title": "基础", "exp": 300, "unlock": "fill" },
+        "3": { "title": "进阶", "exp": 600, "unlock": "debug" },
+        "4": { "title": "熟练", "exp": 1000, "unlock": "reflex" },
+        "5": { "title": "精通", "exp": 1500, "unlockBoss": true }
+      }
+    }
+  ],
+  "expTable": {
+    "1": 100, "2": 300, "3": 600, "4": 1000, "5": 1500,
+    "6": 2200, "7": 3000, "8": 4000, "9": 5500, "10": 8000
+  },
+  "expRewards": {
+    "copy_correct": 10,
+    "fill_correct": 20,
+    "debug_correct": 30,
+    "reflex_correct": 15,
+    "boss_complete": 100,
+    "combo_bonus": 5,
+    "streak_bonus": 20,
+    "perfect_bonus": 50
+  }
+}

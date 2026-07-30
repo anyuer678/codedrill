@@ -1,0 +1,146 @@
+{
+  "language": "TypeScript",
+  "module": "loop",
+  "questions": [
+    {
+      "id": "ts_loop_001",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "for (let i: number = 0; i < 5; i++) {\n    console.log(i);\n}",
+      "explanation": "基础for循环（类型注解）"
+    },
+    {
+      "id": "ts_loop_002",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "let sum: number = 0;\nfor (let i: number = 1; i <= 100; i++) {\n    sum += i;\n}\nconsole.log('Sum:', sum);",
+      "explanation": "累加求和"
+    },
+    {
+      "id": "ts_loop_003",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "const arr: number[] = [64, 34, 25, 12, 22, 11, 90];\nfor (let i = 0; i < arr.length - 1; i++) {\n    for (let j = 0; j < arr.length - i - 1; j++) {\n        if (arr[j] > arr[j + 1]) {\n            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];\n        }\n    }\n}",
+      "explanation": "冒泡排序"
+    },
+    {
+      "id": "ts_loop_004",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function isPrime(n: number): boolean {\n    if (n <= 1) return false;\n    for (let i = 2; i <= Math.sqrt(n); i++) {\n        if (n % i === 0) return false;\n    }\n    return true;\n}",
+      "explanation": "素数判断"
+    },
+    {
+      "id": "ts_loop_005",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "let i: number = 0;\nwhile (i < 5) {\n    console.log(i);\n    i++;\n}",
+      "explanation": "while循环"
+    },
+    {
+      "id": "ts_loop_006",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function fibonacci(n: number): number {\n    if (n <= 1) return n;\n    let a: number = 0, b: number = 1;\n    for (let i = 2; i <= n; i++) {\n        [a, b] = [b, a + b];\n    }\n    return b;\n}",
+      "explanation": "斐波那契数列"
+    },
+    {
+      "id": "ts_loop_007",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "const colors: string[] = ['red', 'green', 'blue'];\nfor (const color of colors) {\n    console.log(color);\n}",
+      "explanation": "for...of遍历"
+    },
+    {
+      "id": "ts_loop_008",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "const obj: Record<string, number> = { a: 1, b: 2, c: 3 };\nfor (const key in obj) {\n    console.log(key, obj[key]);\n}",
+      "explanation": "for...in遍历对象"
+    },
+    {
+      "id": "ts_loop_009",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function factorial(n: number): number {\n    let result: number = 1;\n    for (let i = 2; i <= n; i++) {\n        result *= i;\n    }\n    return result;\n}",
+      "explanation": "阶乘计算"
+    },
+    {
+      "id": "ts_loop_010",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "const arr: number[] = [1, 2, 3, 4, 5];\nlet max: number = arr[0];\nfor (let i = 1; i < arr.length; i++) {\n    if (arr[i] > max) max = arr[i];\n}",
+      "explanation": "查找最大值"
+    },
+    {
+      "id": "ts_loop_011",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "let i: number = 10;\ndo {\n    console.log(i);\n    i--;\n} while (i > 0);",
+      "explanation": "do...while循环"
+    },
+    {
+      "id": "ts_loop_012",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "function matrixMultiply(a: number[][], b: number[][]): number[][] {\n    const result: number[][] = [];\n    for (let i = 0; i < a.length; i++) {\n        result[i] = [];\n        for (let j = 0; j < b[0].length; j++) {\n            let sum: number = 0;\n            for (let k = 0; k < a[0].length; k++) {\n                sum += a[i][k] * b[k][j];\n            }\n            result[i][j] = sum;\n        }\n    }\n    return result;\n}",
+      "explanation": "矩阵乘法"
+    },
+    {
+      "id": "ts_loop_013",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "const arr: number[] = [1, 2, 3, 4, 5];\nconst reversed: number[] = [];\nfor (let i = arr.length - 1; i >= 0; i--) {\n    reversed.push(arr[i]);\n}",
+      "explanation": "数组反转"
+    },
+    {
+      "id": "ts_loop_014",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "for (let i: number = 1; i <= 9; i++) {\n    for (let j: number = 1; j <= i; j++) {\n        process.stdout.write(`${j}*${i}=${i*j}\\t`);\n    }\n    console.log();\n}",
+      "explanation": "九九乘法表"
+    },
+    {
+      "id": "ts_loop_015",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function binarySearch(arr: number[], target: number): number {\n    let left: number = 0, right: number = arr.length - 1;\n    while (left <= right) {\n        const mid: number = Math.floor((left + right) / 2);\n        if (arr[mid] === target) return mid;\n        if (arr[mid] < target) left = mid + 1;\n        else right = mid - 1;\n    }\n    return -1;\n}",
+      "explanation": "二分查找"
+    },
+    {
+      "id": "ts_loop_016",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "const arr: number[] = [2, 1, 5, 3, 4];\nfor (let i = 1; i < arr.length; i++) {\n    const key: number = arr[i];\n    let j: number = i - 1;\n    while (j >= 0 && arr[j] > key) {\n        arr[j + 1] = arr[j];\n        j--;\n    }\n    arr[j + 1] = key;\n}",
+      "explanation": "插入排序"
+    },
+    {
+      "id": "ts_loop_017",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "function generatePermutations(str: string): string[] {\n    const results: string[] = [];\n    function permute(current: string, remaining: string): void {\n        if (remaining.length === 0) {\n            results.push(current);\n            return;\n        }\n        for (let i = 0; i < remaining.length; i++) {\n            permute(\n                current + remaining[i],\n                remaining.slice(0, i) + remaining.slice(i + 1)\n            );\n        }\n    }\n    permute('', str);\n    return results;\n}",
+      "explanation": "字符串全排列"
+    },
+    {
+      "id": "ts_loop_018",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "let count: number = 0;\nfor (let i: number = 1; i <= 100; i++) {\n    if (i % 3 === 0) count++;\n}\nconsole.log('3的倍数个数:', count);",
+      "explanation": "计数3的倍数"
+    },
+    {
+      "id": "ts_loop_019",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function flatten(arr: any[]): any[] {\n    const result: any[] = [];\n    for (const item of arr) {\n        if (Array.isArray(item)) {\n            result.push(...flatten(item));\n        } else {\n            result.push(item);\n        }\n    }\n    return result;\n}",
+      "explanation": "递归扁平化数组"
+    },
+    {
+      "id": "ts_loop_020",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "const map = new Map<number, number>();\nconst arr: number[] = [1, 2, 2, 3, 3, 3];\nfor (const num of arr) {\n    map.set(num, (map.get(num) || 0) + 1);\n}",
+      "explanation": "Map统计频率"
+    }
+  ]
+}

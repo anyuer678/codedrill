@@ -1,0 +1,102 @@
+{
+  "name": "codedrill",
+  "version": "1.1.0",
+  "description": "Coding Reflex - 离线编程训练系统",
+  "author": "CodeDrill Team",
+  "private": true,
+  "type": "module",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "vite",
+    "dev": "npm start",
+    "build:www": "vite build",
+    "build:apk": "vite build && npx cap sync android",
+    "build:exe": "vite build && electron-builder",
+    "build:all": "npm run build:www && npm run build:apk && npm run build:exe",
+    "build": "npm run build:www",
+    "preview": "vite preview",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.{js,vue,css,json}\"",
+    "format:check": "prettier --check \"src/**/*.{js,vue,css,json}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:build": "npm run build:exe",
+    "electron:pack": "vite build && electron-builder --dir",
+    "cap:sync": "npx cap sync android",
+    "cap:build": "npm run build:apk",
+    "cap:open": "npx cap open android",
+    "clean": "rimraf dist",
+    "clean:all": "rimraf dist node_modules"
+  },
+  "dependencies": {
+    "vue": "^3.5.13",
+    "pinia": "^2.3.0",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.0.5",
+    "vitest": "^2.1.8",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^25.0.1",
+    "electron": "33.3.1",
+    "electron-builder": "^25.1.8",
+    "concurrently": "^9.1.0",
+    "wait-on": "^8.0.2",
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/android": "^6.2.0",
+    "eslint": "^9.17.0",
+    "@eslint/js": "^9.17.0",
+    "eslint-plugin-vue": "^9.32.0",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-vue": "^1.1.6",
+    "rimraf": "^6.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "build": {
+    "appId": "com.codedrill.app",
+    "productName": "CodeDrill",
+    "directories": {
+      "output": "dist/electron-build"
+    },
+    "files": [
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "dist/web",
+        "to": "web"
+      },
+      {
+        "from": "core/",
+        "to": "core/",
+        "filter": ["**/*.json"]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "portable": {
+      "artifactName": "CodeDrill-便携版.exe"
+    },
+    "mac": {
+      "target": ["dmg"]
+    },
+    "linux": {
+      "target": ["AppImage"]
+    }
+  }
+}

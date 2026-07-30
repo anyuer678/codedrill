@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CodeDrill</string>
+    <string name="title_activity_main">CodeDrill</string>
+    <string name="package_name">com.codedrill.app</string>
+    <string name="custom_url_scheme">com.codedrill.app</string>
+</resources>

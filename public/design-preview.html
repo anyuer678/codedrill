@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>设计稿预览 · CodeDrill 编程训练系统</title>
+  <style>
+    /* CodeDrill 设计稿预览页 - 机械工坊风格 */
+    body {
+      background: #F5F4F0;
+      padding-top: env(safe-area-inset-top);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: #1F1F1F;
+    }
+    .design-preview {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 16px 80px;
+    }
+    .design-preview h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1F1F1F;
+      text-align: center;
+      margin: 0 0 4px;
+      letter-spacing: -0.5px;
+    }
+    .design-preview .subtitle {
+      text-align: center;
+      color: #5A5A5A;
+      font-size: 14px;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+    }
+    .design-preview .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: #1F1F1F;
+      color: #F5F4F0;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    .design-preview .section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 16px rgba(31, 31, 31, 0.06);
+      border: 1px solid #E5E2D8;
+    }
+    .design-preview .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1F1F1F;
+      margin: 0 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .design-preview .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 16px;
+      background: #2563EB;
+      border-radius: 2px;
+    }
+    .design-preview .img-wrap {
+      background: #F5F4F0;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+    .design-preview img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+    }
+    .design-preview .caption {
+      font-size: 12px;
+      color: #5A5A5A;
+      margin: 4px 4px 0;
+    }
+    .design-preview .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .design-preview .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .design-preview .spec-item {
+      background: #fff;
+      border: 1px solid #E5E2D8;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .design-preview .spec-swatch {
+      width: 100%;
+      height: 48px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .design-preview .spec-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #1F1F1F;
+      margin-bottom: 2px;
+    }
+    .design-preview .spec-hex {
+      font-size: 11px;
+      color: #5A5A5A;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    }
+    @media (max-width: 720px) {
+      .design-preview .grid-2,
+      .design-preview .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="design-preview">
+    <a class="back-btn" href="/">← 返回主页</a>
+    <h1>CodeDrill 编程训练系统 · 设计稿</h1>
+    <p class="subtitle">机械工坊 · 组装知识，锻造技能</p>
+
+    <div class="section">
+      <h2 class="section-title">总览 · 4 屏设计稿</h2>
+      <div class="img-wrap">
+        <img
+          src="/assets/designs/codedrill-mockup.png"
+          alt="CodeDrill 4 屏设计稿：首页 / 训练 / 技能树 / 统计"
+        />
+      </div>
+      <p class="caption">
+        首页（训练大厅 Lv.23 + 任务清单 + 齿轮装饰） / 训练界面（Mission #207 代码编辑器） /
+        技能树（六边形节点） / 统计面板（雷达图 + 折线图）
+      </p>
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <h2 class="section-title">训练大厅</h2>
+        <div class="img-wrap">
+          <img src="/assets/designs/codedrill-home.png" alt="训练大厅" />
+        </div>
+        <p class="caption">Lv.23 Engineer · EXP 2350 / 4600 · 今日任务 1/3</p>
+      </div>
+      <div class="section">
+        <h2 class="section-title">训练界面</h2>
+        <div class="img-wrap">
+          <img src="/assets/designs/codedrill-train.png" alt="训练界面" />
+        </div>
+        <p class="caption">Mission #207 · 难度:进阶 · 倒计时 24:18 · 代码编辑器（深色）</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <h2 class="section-title">技能树</h2>
+        <div class="img-wrap">
+          <img src="/assets/designs/codedrill-skill.png" alt="技能树" />
+        </div>
+        <p class="caption">六边形节点 · 基础语法 / 数据结构 / 算法基础 / 递阶算法 / 系统设计</p>
+      </div>
+      <div class="section">
+        <h2 class="section-title">统计面板</h2>
+        <div class="img-wrap">
+          <img src="/assets/designs/codedrill-stats.png" alt="统计面板" />
+        </div>
+        <p class="caption">正确率 72% · 解题数 235 · 连击 18 · 雷达图 + 近 7 天折线图</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <h2 class="section-title">训练控制台</h2>
+        <div class="img-wrap">
+          <img src="/assets/designs/codedrill-console.png" alt="训练控制台" />
+        </div>
+        <p class="caption">运行 / 提交 · 测试用例 · 战绩曲线</p>
+      </div>
+      <div class="section">
+        <h2 class="section-title">代码编辑器</h2>
+        <div class="img-wrap">
+          <img src="/assets/designs/codedrill-editor.png" alt="代码编辑器" />
+        </div>
+        <p class="caption">深色代码区 · 行号 · 语法高亮 · IntelliSense 占位</p>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="section" style="grid-column: span 3">
+        <h2 class="section-title">视觉元素</h2>
+        <div class="grid-3" style="margin-top: 8px">
+          <div class="spec-item">
+            <div class="spec-swatch" style="background: #1F1F1F"></div>
+            <div class="spec-name">深黑</div>
+            <div class="spec-hex">#1F1F1F · 主色</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-swatch" style="background: #F5F4F0"></div>
+            <div class="spec-name">米白</div>
+            <div class="spec-hex">#F5F4F0 · 背景</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-swatch" style="background: #2563EB"></div>
+            <div class="spec-name">机械蓝</div>
+            <div class="spec-hex">#2563EB · 强调</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-swatch" style="background: #B8845A"></div>
+            <div class="spec-name">古铜</div>
+            <div class="spec-hex">#B8845A · 齿轮 / 徽章</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-swatch" style="background: #6B7280"></div>
+            <div class="spec-name">钢灰</div>
+            <div class="spec-hex">#6B7280 · 次级文字</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-swatch" style="background: #10B981"></div>
+            <div class="spec-name">通过绿</div>
+            <div class="spec-hex">#10B981 · 正确</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <h2 class="section-title">齿轮装饰 · Hero</h2>
+        <div class="img-wrap">
+          <img src="/assets/designs/codedrill-hero-gear.png" alt="齿轮装饰" />
+        </div>
+        <p class="caption">首页右侧蒸汽朋克齿轮 · 侧边栏小齿轮 · 工业感纹理</p>
+      </div>
+      <div class="section">
+        <h2 class="section-title">六边形 · 雷达</h2>
+        <div class="img-wrap">
+          <img src="/assets/designs/codedrill-hexagons.png" alt="六边形" />
+        </div>
+        <p class="caption">技能树节点 · 雷达图背景 · 几何金属感</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

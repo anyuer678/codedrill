@@ -1,0 +1,21 @@
+{
+  "language": "SQL",
+  "module": "loop",
+  "questions": [
+    {"id": "sql_loop_001", "type": "copy", "difficulty": 1, "code": "SELECT * FROM users\nWHERE age > 18;", "explanation": "基础查询"},
+    {"id": "sql_loop_002", "type": "copy", "difficulty": 1, "code": "SELECT name, age\nFROM users\nORDER BY age DESC\nLIMIT 10;", "explanation": "排序限制"},
+    {"id": "sql_loop_003", "type": "copy", "difficulty": 2, "code": "SELECT department, COUNT(*) as count\nFROM employees\nGROUP BY department\nHAVING COUNT(*) > 5\nORDER BY count DESC;", "explanation": "分组统计"},
+    {"id": "sql_loop_004", "type": "copy", "difficulty": 2, "code": "SELECT u.name, COUNT(o.id) as order_count\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nGROUP BY u.id, u.name\nHAVING COUNT(o.id) > 0;", "explanation": "连接查询"},
+    {"id": "sql_loop_005", "type": "copy", "difficulty": 2, "code": "SELECT name, salary\nFROM employees\nWHERE salary > (SELECT AVG(salary) FROM employees)\nORDER BY salary DESC;", "explanation": "子查询"},
+    {"id": "sql_loop_006", "type": "copy", "difficulty": 3, "code": "WITH ranked AS (\n  SELECT name, salary,\n    DENSE_RANK() OVER (ORDER BY salary DESC) as rank\n  FROM employees\n)\nSELECT name, salary, rank\nFROM ranked\nWHERE rank <= 3;", "explanation": "窗口函数"},
+    {"id": "sql_loop_007", "type": "copy", "difficulty": 2, "code": "SELECT\n  CASE\n    WHEN score >= 90 THEN 'A'\n    WHEN score >= 80 THEN 'B'\n    WHEN score >= 70 THEN 'C'\n    WHEN score >= 60 THEN 'D'\n    ELSE 'F'\n  END as grade,\n  COUNT(*) as count\nFROM students\nGROUP BY grade\nORDER BY grade;", "explanation": "CASE表达式"},
+    {"id": "sql_loop_008", "type": "copy", "difficulty": 3, "code": "SELECT DISTINCT a.name\nFROM users a\nINNER JOIN friends f1 ON a.id = f1.user_id\nINNER JOIN friends f2 ON f1.friend_id = f2.user_id\nINNER JOIN users b ON f2.friend_id = b.id\nWHERE b.name = 'Alice' AND a.id != b.id;", "explanation": "多表连接"},
+    {"id": "sql_loop_009", "type": "copy", "difficulty": 2, "code": "SELECT DATE_FORMAT(created_at, '%Y-%m') as month,\n       SUM(amount) as total\nFROM transactions\nWHERE created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)\nGROUP BY month\nORDER BY month;", "explanation": "日期分组"},
+    {"id": "sql_loop_010", "type": "copy", "difficulty": 3, "code": "WITH RECURSIVE tree AS (\n  SELECT id, name, parent_id, 0 as level\n  FROM categories\n  WHERE parent_id IS NULL\n  UNION ALL\n  SELECT c.id, c.name, c.parent_id, t.level + 1\n  FROM categories c\n  INNER JOIN tree t ON c.parent_id = t.id\n)\nSELECT id, name, level FROM tree ORDER BY level, name;", "explanation": "递归查询"},
+    {"id": "sql_loop_011", "type": "copy", "difficulty": 1, "code": "SELECT name, email\nFROM users\nWHERE email LIKE '%@gmail.com'\nORDER BY name;", "explanation": "模式匹配"},
+    {"id": "sql_loop_012", "type": "copy", "difficulty": 2, "code": "SELECT p.name, SUM(oi.quantity * oi.price) as revenue\nFROM products p\nINNER JOIN order_items oi ON p.id = oi.product_id\nINNER JOIN orders o ON oi.order_id = o.id\nWHERE o.status = 'completed'\nGROUP BY p.id, p.name\nORDER BY revenue DESC\nLIMIT 5;", "explanation": "聚合计算"},
+    {"id": "sql_loop_013", "type": "copy", "difficulty": 3, "code": "SELECT user_id,\n       SUM(CASE WHEN action = 'login' THEN 1 ELSE 0 END) as logins,\n       SUM(CASE WHEN action = 'purchase' THEN 1 ELSE 0 END) as purchases,\n       SUM(CASE WHEN action = 'logout' THEN 1 ELSE 0 END) as logouts\nFROM user_actions\nWHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)\nGROUP BY user_id\nORDER BY logins DESC;", "explanation": "条件聚合"},
+    {"id": "sql_loop_014", "type": "copy", "difficulty": 2, "code": "SELECT name,\n       salary,\n       RANK() OVER (PARTITION BY department ORDER BY salary DESC) as dept_rank\nFROM employees\nWHERE department IN ('Engineering', 'Marketing');", "explanation": "分组排名"},
+    {"id": "sql_loop_015", "type": "copy", "difficulty": 3, "code": "WITH daily_revenue AS (\n  SELECT DATE(created_at) as date,\n         SUM(amount) as revenue\n  FROM orders\n  WHERE status = 'completed'\n  GROUP BY DATE(created_at)\n)\nSELECT date,\n       revenue,\n       AVG(revenue) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) as moving_avg\nFROM daily_revenue\nORDER BY date;", "explanation": "移动平均"}
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "language": "Java",
+  "module": "function",
+  "questions": [
+    {
+      "id": "java_func_001",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "public static int add(int a, int b) {\n    return a + b;\n}",
+      "explanation": "基础函数"
+    },
+    {
+      "id": "java_func_002",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "public static int factorial(int n) {\n    if (n <= 1) return 1;\n    return n * factorial(n - 1);\n}",
+      "explanation": "递归阶乘"
+    },
+    {
+      "id": "java_func_003",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "public static int fibonacci(int n) {\n    if (n <= 1) return n;\n    int prev2 = 0, prev1 = 1;\n    for (int i = 2; i <= n; i++) {\n        int current = prev1 + prev2;\n        prev2 = prev1;\n        prev1 = current;\n    }\n    return prev1;\n}",
+      "explanation": "斐波那契数列 - 迭代"
+    },
+    {
+      "id": "java_func_004",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "public static <T> void quickSort(T[] arr, int low, int high, Comparator<T> comp) {\n    if (low < high) {\n        int pivotIndex = partition(arr, low, high, comp);\n        quickSort(arr, low, pivotIndex - 1, comp);\n        quickSort(arr, pivotIndex + 1, high, comp);\n    }\n}\n\nprivate static <T> int partition(T[] arr, int low, int high, Comparator<T> comp) {\n    T pivot = arr[high];\n    int i = low - 1;\n    for (int j = low; j < high; j++) {\n        if (comp.compare(arr[j], pivot) <= 0) {\n            i++;\n            T temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n        }\n    }\n    T temp = arr[i + 1];\n    arr[i + 1] = arr[high];\n    arr[high] = temp;\n    return i + 1;\n}",
+      "explanation": "快速排序 - 泛型实现"
+    },
+    {
+      "id": "java_func_005",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "public static <T> List<T> flatten(List<List<T>> lists) {\n    return lists.stream()\n        .flatMap(Collection::stream)\n        .collect(Collectors.toList());\n}",
+      "explanation": "列表扁平化 - Stream API"
+    },
+    {
+      "id": "java_func_006",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "public static <K, V> Map<K, V> zipToMap(List<K> keys, List<V> values) {\n    if (keys.size() != values.size()) {\n        throw new IllegalArgumentException(\"Keys and values must have same size\");\n    }\n    return IntStream.range(0, keys.size())\n        .boxed()\n        .collect(Collectors.toMap(keys::get, values::get));\n}",
+      "explanation": "合并两个列表为Map"
+    },
+    {
+      "id": "java_func_007",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "public static String formatName(String firstName, String lastName) {\n    if (firstName == null && lastName == null) {\n        return \"\";\n    }\n    if (firstName == null) return lastName.trim();\n    if (lastName == null) return firstName.trim();\n    return String.format(\"%s %s\", firstName.trim(), lastName.trim());\n}",
+      "explanation": "格式化姓名"
+    },
+    {
+      "id": "java_func_008",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "public static <T> Predicate<T> not(Predicate<T> predicate) {\n    return predicate.negate();\n}\n\npublic static <T> Predicate<T> and(Predicate<T>... predicates) {\n    return Arrays.stream(predicates)\n        .reduce(Predicate::and)\n        .orElse(t -> true);\n}",
+      "explanation": "谓词组合器"
+    },
+    {
+      "id": "java_func_009",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "public static <T> List<List<T>> partition(List<T> list, int size) {\n    if (size <= 0) throw new IllegalArgumentException(\"Size must be positive\");\n    return IntStream.range(0, (list.size() + size - 1) / size)\n        .mapToObj(i -> list.subList(i * size, Math.min((i + 1) * size, list.size())))\n        .collect(Collectors.toList());\n}",
+      "explanation": "列表分块"
+    },
+    {
+      "id": "java_func_010",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "public static <T> Optional<T> findFirst(List<T> list, Predicate<T> predicate) {\n    for (T item : list) {\n        if (predicate.test(item)) {\n            return Optional.of(item);\n        }\n    }\n    return Optional.empty();\n}",
+      "explanation": "条件查找"
+    },
+    {
+      "id": "java_func_011",
+      "type": "copy",
+      "difficulty": 1,
+      "explanation": "计算平均值",
+      "code": "public static double average(int[] numbers) {\n    if (numbers.length == 0) return 0;\n    int sum = 0;\n    for (int num : numbers) {\n        sum += num;\n    }\n    return (double) sum / numbers.length;\n}"
+    },
+    {
+      "id": "java_func_012",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "public static <T extends Comparable<T>> T findMax(List<T> list) {\n    if (list == null || list.isEmpty()) {\n        throw new IllegalArgumentException(\"List cannot be null or empty\");\n    }\n    T max = list.get(0);\n    for (T item : list) {\n        if (item.compareTo(max) > 0) {\n            max = item;\n        }\n    }\n    return max;\n}",
+      "explanation": "查找最大值 - 泛型"
+    },
+    {
+      "id": "java_func_013",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "public static <T> Supplier<T> memoize(Supplier<T> supplier) {\n    AtomicReference<T> cached = new AtomicReference<>();\n    AtomicBoolean initialized = new AtomicBoolean(false);\n    return () -> {\n        if (!initialized.getAndSet(true)) {\n            cached.set(supplier.get());\n        }\n        return cached.get();\n    };\n}",
+      "explanation": "记忆化函数"
+    },
+    {
+      "id": "java_func_014",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "public static String repeat(String str, int count) {\n    if (count < 0) throw new IllegalArgumentException(\"Count cannot be negative\");\n    StringBuilder sb = new StringBuilder(str.length() * count);\n    for (int i = 0; i < count; i++) {\n        sb.append(str);\n    }\n    return sb.toString();\n}",
+      "explanation": "字符串重复"
+    },
+    {
+      "id": "java_func_015",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "public static <T, R> Function<T, R> compose(Function<T, R>... functions) {\n    if (functions.length == 0) {\n        throw new IllegalArgumentException(\"At least one function required\");\n    }\n    return Arrays.stream(functions)\n        .reduce(Function::andThen)\n        .orElse(Function.identity());\n}",
+      "explanation": "函数组合"
+    }
+  ]
+}

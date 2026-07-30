@@ -1,0 +1,26 @@
+{
+  "language": "Python",
+  "module": "string",
+  "questions": [
+    {"id": "py_str_001", "type": "copy", "difficulty": 1, "code": "s = 'Hello World'\nprint(len(s))\nprint(s.upper())\nprint(s.lower())", "explanation": "基础操作"},
+    {"id": "py_str_002", "type": "copy", "difficulty": 1, "code": "s1 = 'Hello'\ns2 = 'World'\ns3 = f'{s1} {s2}'\nprint(s3)", "explanation": "f-string格式化"},
+    {"id": "py_str_003", "type": "copy", "difficulty": 2, "code": "s = 'Hello World'\nprint(s.find('World'))\nprint('World' in s)\nprint(s.startswith('Hello'))\nprint(s.endswith('World'))", "explanation": "查找操作"},
+    {"id": "py_str_004", "type": "copy", "difficulty": 2, "code": "s = 'Hello World'\nprint(s[6:])\nprint(s[:5])\nprint(s[2:7])", "explanation": "切片操作"},
+    {"id": "py_str_005", "type": "copy", "difficulty": 2, "code": "s = 'Hello World'\nprint(s.replace('World', 'Python'))\nprint(s.split(' '))\nprint('-'.join(['a', 'b', 'c']))", "explanation": "替换分割"},
+    {"id": "py_str_006", "type": "copy", "difficulty": 2, "code": "s = '  Hello World  '\nprint(s.strip())\nprint(s.lstrip())\nprint(s.rstrip())", "explanation": "去除空格"},
+    {"id": "py_str_007", "type": "copy", "difficulty": 3, "code": "s = 'Hello World'\nreversed_s = s[::-1]\nprint(reversed_s)", "explanation": "字符串反转"},
+    {"id": "py_str_008", "type": "copy", "difficulty": 3, "code": "s = 'Hello World Hello Python'\nwords = s.split()\nword_count = {}\nfor word in words:\n    word_count[word] = word_count.get(word, 0) + 1\nprint(word_count)", "explanation": "单词计数"},
+    {"id": "py_str_009", "type": "copy", "difficulty": 2, "code": "s = 'Hello123World456'\ndigits = ''.join(c for c in s if c.isdigit())\nprint(digits)", "explanation": "提取数字"},
+    {"id": "py_str_010", "type": "copy", "difficulty": 3, "code": "s = 'abcba'\nis_palindrome = s == s[::-1]\nprint('回文' if is_palindrome else '非回文')", "explanation": "回文判断"},
+    {"id": "py_str_011", "type": "copy", "difficulty": 1, "code": "s = 'Hello'\nprint(s[0])\nprint(s[-1])\nprint(s[1:4])", "explanation": "字符访问"},
+    {"id": "py_str_012", "type": "copy", "difficulty": 2, "code": "s = 'Hello World'\nvowels = sum(1 for c in s.lower() if c in 'aeiou')\nconsonants = sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\nprint(f'元音: {vowels}, 辅音: {consonants}')", "explanation": "统计元音辅音"},
+    {"id": "py_str_013", "type": "copy", "difficulty": 3, "code": "s = 'hello world'\nresult = ' '.join(word.capitalize() for word in s.split())\nprint(result)", "explanation": "首字母大写"},
+    {"id": "py_str_014", "type": "copy", "difficulty": 2, "code": "s1 = 'Hello'\ns2 = 'hello'\nprint(s1 == s2)\nprint(s1.lower() == s2.lower())\nprint(s1 < s2)", "explanation": "字符串比较"},
+    {"id": "py_str_015", "type": "copy", "difficulty": 3, "code": "s = 'Hello World'\nwords = s.split()\nreversed_words = ' '.join(reversed(words))\nprint(reversed_words)", "explanation": "单词反转"},
+    {"id": "py_str_016", "type": "copy", "difficulty": 1, "code": "name = 'Python'\nprint(f'Hello, {name}!')\nprint('Hello, {}!'.format(name))", "explanation": "格式化"},
+    {"id": "py_str_017", "type": "copy", "difficulty": 2, "code": "s = 'aabbbcccc'\ncompressed = []\ncount = 1\nfor i in range(1, len(s)):\n    if s[i] == s[i-1]:\n        count += 1\n    else:\n        compressed.append(f'{s[i-1]}{count}')\n        count = 1\ncompressed.append(f'{s[-1]}{count}')\nprint(''.join(compressed))", "explanation": "字符串压缩"},
+    {"id": "py_str_018", "type": "copy", "difficulty": 3, "code": "s = 'abc'\nresult = [s[i:j] for i in range(len(s)) for j in range(i+1, len(s)+1)]\nprint(result)", "explanation": "所有子串"},
+    {"id": "py_str_019", "type": "copy", "difficulty": 2, "code": "email = 'user@example.com'\nis_valid = '@' in email and '.' in email.split('@')[1]\nprint('有效邮箱' if is_valid else '无效邮箱')", "explanation": "邮箱验证"},
+    {"id": "py_str_020", "type": "copy", "difficulty": 3, "code": "s = 'abcabcbb'\nchar_map = {}\nmax_len = left = 0\nfor right, char in enumerate(s):\n    if char in char_map:\n        left = max(left, char_map[char] + 1)\n    char_map[char] = right\n    max_len = max(max_len, right - left + 1)\nprint(max_len)", "explanation": "最长无重复子串"}
+  ]
+}

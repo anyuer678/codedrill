@@ -1,0 +1,14 @@
+{
+  "appId": "com.codedrill.app",
+  "appName": "CodeDrill",
+  "webDir": "dist/web",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "buildOptions": {
+      "keystorePath": null,
+      "keystoreAlias": null
+    }
+  }
+}

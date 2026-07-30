@@ -1,0 +1,146 @@
+{
+  "language": "JavaScript",
+  "module": "function",
+  "questions": [
+    {
+      "id": "js_func_001",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "function add(a, b) {\n    return a + b;\n}\nconsole.log(add(3, 5));",
+      "explanation": "基础函数定义"
+    },
+    {
+      "id": "js_func_002",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "const multiply = (a, b) => a * b;\nconsole.log(multiply(4, 5));",
+      "explanation": "箭头函数"
+    },
+    {
+      "id": "js_func_003",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function sum(...nums) {\n    return nums.reduce((acc, n) => acc + n, 0);\n}\nconsole.log(sum(1, 2, 3, 4));",
+      "explanation": "rest参数"
+    },
+    {
+      "id": "js_func_004",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function greet(name = 'World') {\n    return `Hello, ${name}!`;\n}\nconsole.log(greet());\nconsole.log(greet('Alice'));",
+      "explanation": "默认参数"
+    },
+    {
+      "id": "js_func_005",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function debounce(fn, delay) {\n    let timer;\n    return function(...args) {\n        clearTimeout(timer);\n        timer = setTimeout(() => fn(...args), delay);\n    };\n}",
+      "explanation": "防抖函数"
+    },
+    {
+      "id": "js_func_006",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function throttle(fn, limit) {\n    let inThrottle;\n    return function(...args) {\n        if (!inThrottle) {\n            fn(...args);\n            inThrottle = true;\n            setTimeout(() => inThrottle = false, limit);\n        }\n    };\n}",
+      "explanation": "节流函数"
+    },
+    {
+      "id": "js_func_007",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function curry(fn) {\n    return function curried(...args) {\n        if (args.length >= fn.length) {\n            return fn(...args);\n        }\n        return (...moreArgs) => curried(...args, ...moreArgs);\n    };\n}\nconst add3 = curry((a, b, c) => a + b + c);\nconsole.log(add3(1)(2)(3));",
+      "explanation": "函数柯里化"
+    },
+    {
+      "id": "js_func_008",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "function memoize(fn) {\n    const cache = new Map();\n    return function(...args) {\n        const key = JSON.stringify(args);\n        if (cache.has(key)) return cache.get(key);\n        const result = fn(...args);\n        cache.set(key, result);\n        return result;\n    };\n}",
+      "explanation": "记忆化函数"
+    },
+    {
+      "id": "js_func_009",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function compose(...fns) {\n    return (x) => fns.reduceRight((acc, fn) => fn(acc), x);\n}\nconst add1 = x => x + 1;\nconst double = x => x * 2;\nconst add1ThenDouble = compose(double, add1);\nconsole.log(add1ThenDouble(3));",
+      "explanation": "函数组合"
+    },
+    {
+      "id": "js_func_010",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function pipe(...fns) {\n    return (x) => fns.reduce((acc, fn) => fn(acc), x);\n}\nconst add1 = x => x + 1;\nconst double = x => x * 2;\nconst doubleThenAdd1 = pipe(double, add1);\nconsole.log(doubleThenAdd1(3));",
+      "explanation": "管道函数"
+    },
+    {
+      "id": "js_func_011",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "const obj = {\n    name: 'Alice',\n    greet() {\n        return `Hi, I'm ${this.name}`;\n    }\n};\nconsole.log(obj.greet());",
+      "explanation": "对象方法"
+    },
+    {
+      "id": "js_func_012",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function factorial(n) {\n    if (n <= 1) return 1;\n    return n * factorial(n - 1);\n}\nconsole.log(factorial(5));",
+      "explanation": "递归阶乘"
+    },
+    {
+      "id": "js_func_013",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function fibonacci(n, memo = {}) {\n    if (n in memo) return memo[n];\n    if (n <= 1) return n;\n    memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo);\n    return memo[n];\n}",
+      "explanation": "记忆化斐波那契"
+    },
+    {
+      "id": "js_func_014",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function once(fn) {\n    let called = false;\n    let result;\n    return function(...args) {\n        if (!called) {\n            result = fn(...args);\n            called = true;\n        }\n        return result;\n    };\n}",
+      "explanation": "一次性函数"
+    },
+    {
+      "id": "js_func_015",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function retry(fn, maxAttempts = 3) {\n    return async function(...args) {\n        for (let i = 0; i < maxAttempts; i++) {\n            try {\n                return await fn(...args);\n            } catch (err) {\n                if (i === maxAttempts - 1) throw err;\n            }\n        }\n    };\n}",
+      "explanation": "重试函数"
+    },
+    {
+      "id": "js_func_016",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function partial(fn, ...presetArgs) {\n    return function(...laterArgs) {\n        return fn(...presetArgs, ...laterArgs);\n    };\n}\nconst add = (a, b, c) => a + b + c;\nconst add5 = partial(add, 5);\nconsole.log(add5(3, 2));",
+      "explanation": "偏函数"
+    },
+    {
+      "id": "js_func_017",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "class EventEmitter {\n    constructor() {\n        this.events = {};\n    }\n    on(event, listener) {\n        (this.events[event] = this.events[event] || []).push(listener);\n        return this;\n    }\n    emit(event, ...args) {\n        (this.events[event] || []).forEach(fn => fn(...args));\n    }\n    off(event, listener) {\n        this.events[event] = (this.events[event] || []).filter(fn => fn !== listener);\n    }\n}",
+      "explanation": "事件发射器"
+    },
+    {
+      "id": "js_func_018",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function range(start, end, step = 1) {\n    const result = [];\n    for (let i = start; step > 0 ? i < end : i > end; i += step) {\n        result.push(i);\n    }\n    return result;\n}\nconsole.log(range(1, 10, 2));",
+      "explanation": "生成范围数组"
+    },
+    {
+      "id": "js_func_019",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function pick(obj, keys) {\n    return keys.reduce((result, key) => {\n        if (key in obj) result[key] = obj[key];\n        return result;\n    }, {});\n}\nconst obj = { a: 1, b: 2, c: 3 };\nconsole.log(pick(obj, ['a', 'c']));",
+      "explanation": "对象属性选取"
+    },
+    {
+      "id": "js_func_020",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "function omit(obj, keys) {\n    return Object.keys(obj)\n        .filter(key => !keys.includes(key))\n        .reduce((result, key) => {\n            result[key] = obj[key];\n            return result;\n        }, {});\n}",
+      "explanation": "对象属性排除"
+    }
+  ]
+}

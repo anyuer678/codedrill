@@ -1,0 +1,21 @@
+{
+  "language": "SQL",
+  "module": "string",
+  "questions": [
+    {"id": "sql_str_001", "type": "copy", "difficulty": 1, "code": "SELECT name,\n       UPPER(name) as upper,\n       LOWER(name) as lower,\n       LENGTH(name) as length\nFROM users;", "explanation": "基础字符串函数"},
+    {"id": "sql_str_002", "type": "copy", "difficulty": 1, "code": "SELECT CONCAT(first_name, ' ', last_name) as full_name\nFROM users\nWHERE first_name IS NOT NULL;", "explanation": "字符串拼接"},
+    {"id": "sql_str_003", "type": "copy", "difficulty": 2, "code": "SELECT email,\n       SUBSTRING(email, 1, POSITION('@' IN email) - 1) as username,\n       SUBSTRING(email, POSITION('@' IN email) + 1) as domain\nFROM users\nWHERE email LIKE '%@%';", "explanation": "字符串截取"},
+    {"id": "sql_str_004", "type": "copy", "difficulty": 2, "code": "SELECT name,\n       TRIM(name) as trimmed,\n       LTRIM(name) as ltrimmed,\n       RTRIM(name) as rtrimmed\nFROM users\nWHERE name LIKE ' %' OR name LIKE '% ';", "explanation": "去除空格"},
+    {"id": "sql_str_005", "type": "copy", "difficulty": 2, "code": "SELECT name,\n       REPLACE(name, ' ', '_') as no_spaces,\n       REPLACE(LOWER(name), ' ', '-') as slug\nFROM products;", "explanation": "字符串替换"},
+    {"id": "sql_str_006", "type": "copy", "difficulty": 3, "code": "SELECT name,\n       CASE\n         WHEN email LIKE '%@gmail.com' THEN 'Gmail'\n         WHEN email LIKE '%@yahoo.com' THEN 'Yahoo'\n         WHEN email LIKE '%@outlook.com' THEN 'Outlook'\n         ELSE 'Other'\n       END as email_provider,\n       COUNT(*) OVER (PARTITION BY CASE\n         WHEN email LIKE '%@gmail.com' THEN 'Gmail'\n         WHEN email LIKE '%@yahoo.com' THEN 'Yahoo'\n         ELSE 'Other'\n       END) as provider_count\nFROM users\nWHERE email IS NOT NULL;", "explanation": "模式匹配统计"},
+    {"id": "sql_str_007", "type": "copy", "difficulty": 2, "code": "SELECT name,\n       REVERSE(name) as reversed,\n       REPEAT('*', LENGTH(password)) as masked_password\nFROM users;", "explanation": "字符串操作"},
+    {"id": "sql_str_008", "type": "copy", "difficulty": 3, "code": "SELECT name,\n       CASE\n         WHEN REGEXP_LIKE(email, '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')\n         THEN 'Valid'\n         ELSE 'Invalid'\n       END as email_status\nFROM users\nWHERE email IS NOT NULL;", "explanation": "正则验证"},
+    {"id": "sql_str_009", "type": "copy", "difficulty": 2, "code": "SELECT name,\n       LEFT(name, 3) as prefix,\n       RIGHT(name, 3) as suffix,\n       CHAR_LENGTH(name) as char_length\nFROM products;", "explanation": "子串提取"},
+    {"id": "sql_str_010", "type": "copy", "difficulty": 3, "code": "SELECT\n  GROUP_CONCAT(\n    CASE\n      WHEN score >= 90 THEN CONCAT(name, ' (A)')\n      WHEN score >= 80 THEN CONCAT(name, ' (B)')\n      ELSE CONCAT(name, ' (C)')\n    END\n    ORDER BY score DESC\n    SEPARATOR ', '\n  ) as honor_roll\nFROM students\nWHERE score >= 70;", "explanation": "条件聚合字符串"},
+    {"id": "sql_str_011", "type": "copy", "difficulty": 1, "code": "SELECT name,\n       LENGTH(name) > 10 as is_long_name\nFROM users;", "explanation": "长度判断"},
+    {"id": "sql_str_012", "type": "copy", "difficulty": 2, "code": "SELECT description,\n       SUBSTRING_INDEX(description, '.', 1) as first_sentence,\n       LENGTH(description) - LENGTH(REPLACE(description, ' ', '')) + 1 as word_count\nFROM articles;", "explanation": "文本分析"},
+    {"id": "sql_str_013", "type": "copy", "difficulty": 3, "code": "SELECT\n  LPAD('*', 5 - FLOOR(LENGTH(CAST(score AS CHAR)) / 20), '*') as rating,\n  name,\n  score\nFROM (\n  SELECT name, AVG(score) as score\n  FROM reviews\n  GROUP BY name\n) sub\nORDER BY score DESC;", "explanation": "文本评级"},
+    {"id": "sql_str_014", "type": "copy", "difficulty": 2, "code": "SELECT name,\n       COALESCE(NULLIF(phone, ''), 'N/A') as phone,\n       COALESCE(NULLIF(email, ''), 'N/A') as email\nFROM contacts;", "explanation": "NULL处理"},
+    {"id": "sql_str_015", "type": "copy", "difficulty": 3, "code": "SELECT\n  CONCAT(\n    UPPER(LEFT(first_name, 1)),\n    LOWER(SUBSTRING(first_name, 2)),\n    ' ',\n    UPPER(LEFT(last_name, 1)),\n    LOWER(SUBSTRING(last_name, 2))\n  ) as formatted_name,\n  email\nFROM users\nWHERE first_name IS NOT NULL AND last_name IS NOT NULL;", "explanation": "格式化姓名"}
+  ]
+}

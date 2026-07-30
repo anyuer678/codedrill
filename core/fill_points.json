@@ -1,0 +1,52 @@
+{
+  "blank_positions": [
+    {
+      "id": "variable_name",
+      "description": "变量名填空",
+      "difficulty": "easy",
+      "example": "int ___ = 10;"
+    },
+    {
+      "id": "condition",
+      "description": "判断条件填空",
+      "difficulty": "medium",
+      "example": "if (x ___ 0)"
+    },
+    {
+      "id": "function_param",
+      "description": "函数入参填空",
+      "difficulty": "medium",
+      "example": "public int sum(int a, ___ b)"
+    },
+    {
+      "id": "method_name",
+      "description": "方法名填空",
+      "difficulty": "easy",
+      "example": "public void ___()"
+    },
+    {
+      "id": "loop_condition",
+      "description": "循环条件填空",
+      "difficulty": "medium",
+      "example": "for (int i = 0; i ___; i++)"
+    },
+    {
+      "id": "return_value",
+      "description": "返回值填空",
+      "difficulty": "hard",
+      "example": "return ___;"
+    },
+    {
+      "id": "operator",
+      "description": "运算符填空",
+      "difficulty": "medium",
+      "example": "int result = a ___ b;"
+    },
+    {
+      "id": "array_index",
+      "description": "数组索引填空",
+      "difficulty": "hard",
+      "example": "arr[___]"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "language": "Java",
+  "module": "loop",
+  "questions": [
+    {
+      "id": "java_loop_001",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "for (int i = 0; i < 5; i++) {\n    System.out.println(i);\n}",
+      "explanation": "基础for循环"
+    },
+    {
+      "id": "java_loop_002",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "int sum = 0;\nfor (int i = 1; i <= 100; i++) {\n    sum += i;\n}\nSystem.out.println(\"Sum: \" + sum);",
+      "explanation": "累加求和"
+    },
+    {
+      "id": "java_loop_003",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "int[] arr = {64, 34, 25, 12, 22, 11, 90};\nfor (int i = 0; i < arr.length - 1; i++) {\n    for (int j = 0; j < arr.length - i - 1; j++) {\n        if (arr[j] > arr[j + 1]) {\n            int temp = arr[j];\n            arr[j] = arr[j + 1];\n            arr[j + 1] = temp;\n        }\n    }\n}",
+      "explanation": "冒泡排序算法"
+    },
+    {
+      "id": "java_loop_004",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "public static boolean isPrime(int n) {\n    if (n <= 1) return false;\n    for (int i = 2; i <= Math.sqrt(n); i++) {\n        if (n % i == 0) {\n            return false;\n        }\n    }\n    return true;\n}",
+      "explanation": "素数判断函数"
+    },
+    {
+      "id": "java_loop_005",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "public static int[] twoSum(int[] nums, int target) {\n    Map<Integer, Integer> map = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n        int complement = target - nums[i];\n        if (map.containsKey(complement)) {\n            return new int[] { map.get(complement), i };\n        }\n        map.put(nums[i], i);\n    }\n    throw new IllegalArgumentException(\"No solution\");\n}",
+      "explanation": "两数之和 - 哈希表解法"
+    },
+    {
+      "id": "java_loop_006",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "public static String longestCommonPrefix(String[] strs) {\n    if (strs == null || strs.length == 0) return \"\";\n    String prefix = strs[0];\n    for (int i = 1; i < strs.length; i++) {\n        while (strs[i].indexOf(prefix) != 0) {\n            prefix = prefix.substring(0, prefix.length() - 1);\n            if (prefix.isEmpty()) return \"\";\n        }\n    }\n    return prefix;\n}",
+      "explanation": "最长公共前缀"
+    },
+    {
+      "id": "java_loop_007",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "public static int binarySearch(int[] arr, int target) {\n    int left = 0, right = arr.length - 1;\n    while (left <= right) {\n        int mid = left + (right - left) / 2;\n        if (arr[mid] == target) return mid;\n        if (arr[mid] < target) left = mid + 1;\n        else right = mid - 1;\n    }\n    return -1;\n}",
+      "explanation": "二分查找算法"
+    },
+    {
+      "id": "java_loop_008",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "public static List<List<Integer>> threeSum(int[] nums) {\n    List<List<Integer>> result = new ArrayList<>();\n    Arrays.sort(nums);\n    for (int i = 0; i < nums.length - 2; i++) {\n        if (i > 0 && nums[i] == nums[i - 1]) continue;\n        int left = i + 1, right = nums.length - 1;\n        while (left < right) {\n            int sum = nums[i] + nums[left] + nums[right];\n            if (sum == 0) {\n                result.add(Arrays.asList(nums[i], nums[left], nums[right]));\n                while (left < right && nums[left] == nums[left + 1]) left++;\n                while (left < right && nums[right] == nums[right - 1]) right--;\n                left++; right--;\n            } else if (sum < 0) left++;\n            else right--;\n        }\n    }\n    return result;\n}",
+      "explanation": "三数之和 - 双指针解法"
+    },
+    {
+      "id": "java_loop_009",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "public static void rotate(int[] nums, int k) {\n    k = k % nums.length;\n    reverse(nums, 0, nums.length - 1);\n    reverse(nums, 0, k - 1);\n    reverse(nums, k, nums.length - 1);\n}\n\nprivate static void reverse(int[] nums, int start, int end) {\n    while (start < end) {\n        int temp = nums[start];\n        nums[start] = nums[end];\n        nums[end] = temp;\n        start++;\n        end--;\n    }\n}",
+      "explanation": "轮转数组 - 三次翻转法"
+    },
+    {
+      "id": "java_loop_010",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "public static int lengthOfLongestSubstring(String s) {\n    Map<Character, Integer> map = new HashMap<>();\n    int maxLen = 0, left = 0;\n    for (int right = 0; right < s.length(); right++) {\n        char c = s.charAt(right);\n        if (map.containsKey(c)) {\n            left = Math.max(left, map.get(c) + 1);\n        }\n        map.put(c, right);\n        maxLen = Math.max(maxLen, right - left + 1);\n    }\n    return maxLen;\n}",
+      "explanation": "无重复字符的最长子串 - 滑动窗口"
+    },
+    {
+      "id": "java_loop_011",
+      "type": "copy",
+      "difficulty": 1,
+      "code": "int n = 10;\nint a = 0, b = 1;\nfor (int i = 0; i < n; i++) {\n    System.out.print(a + \" \");\n    int temp = a + b;\n    a = b;\n    b = temp;\n}",
+      "explanation": "斐波那契数列"
+    },
+    {
+      "id": "java_loop_012",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "public static int climbStairs(int n) {\n    if (n <= 2) return n;\n    int prev1 = 2, prev2 = 1;\n    for (int i = 3; i <= n; i++) {\n        int current = prev1 + prev2;\n        prev2 = prev1;\n        prev1 = current;\n    }\n    return prev1;\n}",
+      "explanation": "爬楼梯 - 动态规划"
+    },
+    {
+      "id": "java_loop_013",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "public static List<String> generateParenthesis(int n) {\n    List<String> result = new ArrayList<>();\n    backtrack(result, \"\", 0, 0, n);\n    return result;\n}\n\nprivate static void backtrack(List<String> result, String current, int open, int close, int max) {\n    if (current.length() == max * 2) {\n        result.add(current);\n        return;\n    }\n    if (open < max) {\n        backtrack(result, current + \"(\", open + 1, close, max);\n    }\n    if (close < open) {\n        backtrack(result, current + \")\", open, close + 1, max);\n    }\n}",
+      "explanation": "括号生成 - 回溯算法"
+    },
+    {
+      "id": "java_loop_014",
+      "type": "copy",
+      "difficulty": 2,
+      "code": "public static int maxSubArray(int[] nums) {\n    int maxSum = nums[0];\n    int currentSum = nums[0];\n    for (int i = 1; i < nums.length; i++) {\n        currentSum = Math.max(nums[i], currentSum + nums[i]);\n        maxSum = Math.max(maxSum, currentSum);\n    }\n    return maxSum;\n}",
+      "explanation": "最大子数组和 - Kadane算法"
+    },
+    {
+      "id": "java_loop_015",
+      "type": "copy",
+      "difficulty": 3,
+      "code": "public static boolean isValid(String s) {\n    Deque<Character> stack = new ArrayDeque<>();\n    for (char c : s.toCharArray()) {\n        if (c == '(') stack.push(')');\n        else if (c == '[') stack.push(']');\n        else if (c == '{') stack.push('}');\n        else if (stack.isEmpty() || stack.pop() != c) {\n            return false;\n        }\n    }\n    return stack.isEmpty();\n}",
+      "explanation": "有效的括号 - 栈解法"
+    }
+  ]
+}

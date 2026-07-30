@@ -1,0 +1,88 @@
+/* =========================================================
+ * 主题 — CodeDrill（机械工坊）
+ * 组装知识，锻造技能
+ * 母题：齿轮、蒸汽朋克、深蓝钢、黄铜
+ * ========================================================= */
+
+[data-theme="codedrill"] {
+  --bg: #f5f0e8;
+  --primary: #2C3E50;
+  --primary-dark: #1A252F;
+  --primary-light: #4A6072;
+  --accent: #C8956A;
+  --accent-dark: #A8764A;
+  --accent-light: #E0B58E;
+  --secondary: #B85450;
+  --secondary-dark: #8A3D3A;
+  --tab-active: #2C3E50;
+  --tab-active-bg: rgba(44, 62, 80, 0.08);
+  --rate-unknown-bg: #FAF5E8;
+  --rate-unknown-text: #6B6B5C;
+  --rate-vague-bg: #D9C8A8;
+  --rate-vague-text: #6B5A3F;
+  --rate-known-bg: #2C3E50;
+  --rate-known-text: #FAF5E8;
+  --code-bg: #1A2332;
+  --code-bg-2: #232F3D;
+  --code-text: #E8E6DC;
+  --code-line-num: #4A6072;
+  --code-keyword: #C8956A;
+  --code-string: #8B9A6F;
+  --code-comment: #6B6B5C;
+  --code-fn: #E0B58E;
+  --code-cursor: #C8956A;
+  --btn-primary-bg: #2C3E50;
+  --btn-primary-text: #FAF5E8;
+  --btn-primary-hover: #1A252F;
+  --btn-accent-bg: #C8956A;
+  --btn-accent-text: #1A1A1A;
+  --progress-track: #E5DCC8;
+  --progress-fill: linear-gradient(90deg, #A8764A 0%, #C8956A 50%, #E0B58E 100%);
+  --link: #2C3E50;
+  --font-display: var(--font-serif-en);
+  --font-heading: var(--font-serif-en);
+  --font-body:    var(--font-sans);
+  --font-meta:    var(--font-sans);
+  --font-num:     var(--font-mono);
+  --font-mono:    var(--font-mono);
+}
+
+[data-theme^="codedrill-"] {
+  --bg: #f5f0e8;
+  --primary: #2C3E50;
+  --primary-dark: #1A252F;
+  --primary-light: #4A6072;
+  --accent: #C8956A;
+  --tab-active: #2C3E50;
+  --tab-active-bg: rgba(44, 62, 80, 0.08);
+  --btn-primary-bg: #2C3E50;
+  --btn-primary-text: #FAF5E8;
+  --btn-primary-hover: #1A252F;
+  --btn-accent-bg: #C8956A;
+  --btn-accent-text: #1A1A1A;
+  --link: #2C3E50;
+  --progress-track: #E5DCC8;
+  --progress-fill: linear-gradient(90deg, #A8764A 0%, #C8956A 50%, #E0B58E 100%);
+  --font-display: var(--font-serif-en);
+  --font-heading: var(--font-serif-en);
+  --font-body: var(--font-sans);
+  --font-meta: var(--font-sans);
+  --font-num: var(--font-mono);
+  --font-mono: var(--font-mono);
+}
+[data-theme="codedrill-steel"],
+[data-theme="codedrill-carbon"],
+[data-theme="codedrill-plasma"] {
+  --bg: #181c20;
+  --text-primary: #e0e4e8;
+  --text-secondary: #a0a8b0;
+  --bg-card: rgba(24,28,32,0.88);
+  --border: #3a4048;
+}
+[data-theme="codedrill-copper"] {
+  --bg: #282218;
+  --text-primary: #e0dcd0;
+  --text-secondary: #a09888;
+  --bg-card: rgba(40,34,28,0.88);
+  --border: #5a4840;
+}

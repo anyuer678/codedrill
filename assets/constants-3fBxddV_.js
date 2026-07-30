@@ -1,0 +1,1 @@
+const S=["Java","Python","C++","JavaScript","TypeScript","Linux","SQL"],s={PROFILE:"profile",STATS:"stats",SETTINGS:"settings",HISTORY:"history",SKILLS:"skills",ACHIEVEMENTS:"achievements"};export{S as L,s as S};

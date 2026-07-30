@@ -1,5 +1,8 @@
 # CodeDrill
 
+[![GitHub Pages](https://img.shields.io/badge/%F0%9F%8C%90-%E5%9C%A8%E7%BA%BF%E9%A2%84%E8%A7%88-2ea44f)](https://anyuer678.github.io/codedrill/)
+> ⚠️ **在线预览功能受限**：部分交互（如离线训练数据持久化、TTS 语音合成、Android/iOS 原生功能）在 GitHub Pages 静态环境下不可用。建议下载安装包以获得完整体验。
+
 **离线编程训练系统** — 最终版
 
 支持 Web、Windows、Android 三端运行。通过代码临摹、填空、改错等训练模式，帮助开发者形成编程肌肉记忆。

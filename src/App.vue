@@ -218,8 +218,6 @@ html, body {
 <style scoped>
 .app-layout {
   height: 100%;
-  min-height: 100vh;
-  min-height: 100dvh;
   display: flex;
 }
 
@@ -299,8 +297,6 @@ html, body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   background: var(--bg-main);
 }
 

@@ -286,8 +286,7 @@ function startTraining() {
 .home-layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100%;
   background: var(--bg-main);
   font-family: var(--font);
 }
@@ -378,8 +377,6 @@ function startTraining() {
   flex: 1;
   display: flex;
   overflow: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .train-config {
@@ -689,8 +686,8 @@ function startTraining() {
 /* 移动端响应式 */
 @media (max-width: 768px) {
   .home-layout {
-    min-height: 100vh;
-    min-height: 100dvh;
+    height: auto;
+    min-height: 100%;
   }
 
   .top-bar {
@@ -717,8 +714,8 @@ function startTraining() {
 
   .main-area {
     flex-direction: column;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: visible;
+    height: auto;
   }
 
   .train-config {
@@ -780,11 +777,10 @@ function startTraining() {
 
   .btn-start {
     width: 100%;
-    padding: 14px 24px;
+    padding: 12px 24px;
     font-size: 16px;
     font-weight: 600;
     display: block;
-    margin-bottom: 16px;
   }
 
   .stats-panel {

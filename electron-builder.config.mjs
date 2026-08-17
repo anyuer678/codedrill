@@ -54,7 +54,6 @@ const iconPng = join(ROOT, "resources", "icon.png");
 
 if (existsSync(iconIco)) {
   config.win.icon = "resources/icon.ico";
-  config.nsis = config.nsis || {};
   config.nsis.installerIcon = "resources/icon.ico";
   config.nsis.uninstallerIcon = "resources/icon.ico";
   config.nsis.installerHeaderIcon = "resources/icon.ico";

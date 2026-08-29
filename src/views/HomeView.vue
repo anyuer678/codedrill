@@ -172,7 +172,7 @@ const allModes = [
   { id: "challenge", label: "限时挑战", desc: "多题型限时", bg: "var(--accent-yellow)", small: true },
 ];
 
-const languages = ["Java", "Python", "C++", "JavaScript", "TypeScript", "Linux", "SQL"];
+const languages = ["Java", "Python", "C++", "JavaScript", "TypeScript", "Bash", "SQL"];
 
 const modulesByLanguage = {
   Java: [
@@ -200,7 +200,7 @@ const modulesByLanguage = {
     { id: "array", label: "数组" }, { id: "string", label: "字符串" }, { id: "function", label: "函数" },
     { id: "class", label: "类与接口" }, { id: "io", label: "模块系统" },
   ],
-  Linux: [
+  Bash: [
     { id: "loop", label: "Shell基础" }, { id: "condition", label: "条件判断" },
     { id: "array", label: "文件操作" }, { id: "string", label: "文本处理" }, { id: "function", label: "Shell函数" },
     { id: "class", label: "系统管理" }, { id: "io", label: "IO重定向" },

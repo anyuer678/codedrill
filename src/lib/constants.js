@@ -5,7 +5,7 @@
 export const APP_NAME = "Coding Reflex";
 export const APP_VERSION = "1.0.0";
 
-export const LANGUAGES = ["Java", "Python", "C++", "JavaScript", "TypeScript", "Linux", "SQL"];
+export const LANGUAGES = ["Java", "Python", "C++", "JavaScript", "TypeScript", "Bash", "SQL"];
 
 export const LANGUAGE_MAP = {
   Java: { id: "java", ext: ".java", icon: "J" },
@@ -13,7 +13,7 @@ export const LANGUAGE_MAP = {
   "C++": { id: "cpp", ext: ".cpp", icon: "C" },
   JavaScript: { id: "javascript", ext: ".js", icon: "JS" },
   TypeScript: { id: "typescript", ext: ".ts", icon: "TS" },
-  Linux: { id: "linux", ext: ".sh", icon: "L" },
+  Bash: { id: "bash", ext: ".sh", icon: "B" },
   SQL: { id: "sql", ext: ".sql", icon: "S" },
 };
 

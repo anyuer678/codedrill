@@ -130,7 +130,7 @@ function getKeywords(language) {
       "switch", "this", "throw", "true", "try", "type", "typeof", "undefined",
       "var", "void", "while", "with", "yield",
     ],
-    Linux: [
+    Bash: [
       "if", "then", "else", "elif", "fi", "for", "while", "do", "done",
       "case", "esac", "function", "return", "local", "export", "source",
       "echo", "read", "cd", "ls", "grep", "find", "awk", "sed", "sort",
@@ -192,7 +192,7 @@ function getBuiltins(language) {
       "Exclude", "Extract", "ReturnType", "Parameters", "ConstructorParameters",
       "Awaited", "InstanceType", "ThisType",
     ],
-    Linux: [
+    Bash: [
       "echo", "read", "cd", "ls", "pwd", "mkdir", "rm", "cp", "mv",
       "grep", "find", "awk", "sed", "sort", "wc", "cat", "head", "tail",
       "chmod", "chown", "ps", "kill", "top", "df", "du", "tar", "zip",

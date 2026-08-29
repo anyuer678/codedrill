@@ -1,5 +1,5 @@
 {
-  "language": "Linux",
+  "language": "Bash",
   "module": "array",
   "questions": [
     {"id": "linux_arr_001", "type": "copy", "difficulty": 1, "code": "arr=(apple banana cherry date)\necho \"First: ${arr[0]}\"\necho \"All: ${arr[@]}\"\necho \"Length: ${#arr[@]}\"", "explanation": "数组基础"},

@@ -1,5 +1,5 @@
 {
-  "language": "Linux",
+  "language": "Bash",
   "module": "condition",
   "questions": [
     {"id": "linux_cond_001", "type": "copy", "difficulty": 1, "code": "x=10\nif [ $x -gt 0 ]; then\n  echo \"Positive\"\nelse\n  echo \"Negative\"\nfi", "explanation": "基础if判断"},

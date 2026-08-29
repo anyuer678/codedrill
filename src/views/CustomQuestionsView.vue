@@ -261,7 +261,7 @@ import { useRouter } from "vue-router";
 import { getCustomQuestions, addCustomQuestion, deleteCustomQuestion, exportCustomQuestions, importCustomQuestions, getCustomStats } from "@/lib/customQuestionBank";
 
 const router = useRouter();
-const languages = ["Java", "Python", "C++", "JavaScript", "Linux", "SQL"];
+const languages = ["Java", "Python", "C++", "JavaScript", "Bash", "SQL"];
 const modules = [
   { id: "loop", label: "循环" },
   { id: "condition", label: "条件" },

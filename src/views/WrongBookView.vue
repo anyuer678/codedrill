@@ -107,7 +107,7 @@ import { useRouter } from "vue-router";
 import { getWrongQuestions, getWrongStats, markWrongMastered, removeWrongQuestion } from "@/lib/questionBank";
 
 const router = useRouter();
-const languages = ["Java", "Python", "C++", "JavaScript", "Linux", "SQL"];
+const languages = ["Java", "Python", "C++", "JavaScript", "Bash", "SQL"];
 const moduleLabels = { loop: "循环", condition: "条件", array: "数组", string: "字符串", function: "函数" };
 const errorLabels = { syntax: "语法", structure: "结构", api: "API", logic: "逻辑", typo: "手速" };
 

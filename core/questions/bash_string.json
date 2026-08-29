@@ -1,5 +1,5 @@
 {
-  "language": "Linux",
+  "language": "Bash",
   "module": "string",
   "questions": [
     {"id": "linux_str_001", "type": "copy", "difficulty": 1, "code": "str=\"Hello World\"\necho \"Length: ${#str}\"\necho \"Upper: ${str^^}\"\necho \"Lower: ${str,,}\"", "explanation": "基础字符串操作"},

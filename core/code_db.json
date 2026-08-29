@@ -1,7 +1,7 @@
 {
   "version": "3.0",
   "lastUpdated": "2026-06-21",
-  "languages": ["Java", "Python", "C++", "JavaScript", "TypeScript", "Linux", "SQL"],
+  "languages": ["Java", "Python", "C++", "JavaScript", "TypeScript", "Bash", "SQL"],
   "modules": ["loop", "condition", "array", "string", "function"],
   "questions_per_module": 20,
   "total_questions": 500,
@@ -41,12 +41,12 @@
       "string": "typescript_string.json",
       "function": "typescript_function.json"
     },
-    "Linux": {
-      "loop": "linux_loop.json",
-      "condition": "linux_condition.json",
-      "array": "linux_array.json",
-      "string": "linux_string.json",
-      "function": "linux_function.json"
+    "Bash": {
+      "loop": "bash_loop.json",
+      "condition": "bash_condition.json",
+      "array": "bash_array.json",
+      "string": "bash_string.json",
+      "function": "bash_function.json"
     },
     "SQL": {
       "loop": "sql_loop.json",

@@ -39,11 +39,11 @@ import tsArray from "../../core/questions/typescript_array.json";
 import tsString from "../../core/questions/typescript_string.json";
 import tsFunction from "../../core/questions/typescript_function.json";
 
-import linuxLoop from "../../core/questions/linux_loop.json";
-import linuxCondition from "../../core/questions/linux_condition.json";
-import linuxArray from "../../core/questions/linux_array.json";
-import linuxString from "../../core/questions/linux_string.json";
-import linuxFunction from "../../core/questions/linux_function.json";
+import bashLoop from "../../core/questions/bash_loop.json";
+import bashCondition from "../../core/questions/bash_condition.json";
+import bashArray from "../../core/questions/bash_array.json";
+import bashString from "../../core/questions/bash_string.json";
+import bashFunction from "../../core/questions/bash_function.json";
 
 import sqlLoop from "../../core/questions/sql_loop.json";
 import sqlCondition from "../../core/questions/sql_condition.json";
@@ -109,14 +109,14 @@ const state = {
       class: wrapQuestions(tsFunction),
       io: wrapQuestions(tsArray),
     },
-    Linux: {
-      loop: wrapQuestions(linuxLoop),
-      condition: wrapQuestions(linuxCondition),
-      array: wrapQuestions(linuxArray),
-      string: wrapQuestions(linuxString),
-      function: wrapQuestions(linuxFunction),
-      class: wrapQuestions(linuxFunction),
-      io: wrapQuestions(linuxArray),
+    Bash: {
+      loop: wrapQuestions(bashLoop),
+      condition: wrapQuestions(bashCondition),
+      array: wrapQuestions(bashArray),
+      string: wrapQuestions(bashString),
+      function: wrapQuestions(bashFunction),
+      class: wrapQuestions(bashFunction),
+      io: wrapQuestions(bashArray),
     },
     SQL: {
       loop: wrapQuestions(sqlLoop),

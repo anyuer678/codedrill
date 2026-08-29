@@ -287,6 +287,7 @@ import CodeDisplay from "@/components/CodeDisplay.vue";
 import DiffView from "@/components/DiffView.vue";
 import CompletionPopup from "@/components/CompletionPopup.vue";
 import { getCompletions } from "@/lib/completionService";
+import { tokenizeLine, diffLineTokens, lineEqualsTrimmed } from "@/lib/trainTyping";
 
 const route = useRoute();
 const router = useRouter();
@@ -352,140 +353,14 @@ const typingSpeed = computed(() => {
   return Math.round((totalChars.value / elapsed) * 60);
 });
 
-/**
- * 将一行代码分割为 token（词法单元）
- */
-function tokenizeLine(line) {
-  if (!line) {return [{ text: " ", type: "empty" }];}
-
-  const tokens = [];
-  let current = "";
-  let inString = false;
-  let stringChar = "";
-
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i];
-
-    // 字符串内
-    if (inString) {
-      current += ch;
-      if (ch === stringChar && line[i - 1] !== "\\") {
-        tokens.push({ text: current, type: "string" });
-        current = "";
-        inString = false;
-      }
-      continue;
-    }
-
-    // 字符串开始
-    if (ch === '"' || ch === "'") {
-      if (current) {
-        tokens.push({ text: current, type: classifyToken(current) });
-        current = "";
-      }
-      inString = true;
-      stringChar = ch;
-      current = ch;
-      continue;
-    }
-
-    // 空格
-    if (/\s/.test(ch)) {
-      if (current) {
-        tokens.push({ text: current, type: classifyToken(current) });
-        current = "";
-      }
-      tokens.push({ text: ch, type: "space" });
-      continue;
-    }
-
-    // 分隔符
-    if (/[{}()\\[\];,.]/.test(ch)) {
-      if (current) {
-        tokens.push({ text: current, type: classifyToken(current) });
-        current = "";
-      }
-      tokens.push({ text: ch, type: "delimiter" });
-      continue;
-    }
-
-    // 运算符
-    if (/[+\-*/%=<>!&|^~?:]/.test(ch)) {
-      if (current && /[+\-*/%=<>!&|^~?:]/.test(current[current.length - 1])) {
-        current += ch;
-      } else {
-        if (current) {
-          tokens.push({ text: current, type: classifyToken(current) });
-          current = "";
-        }
-        current = ch;
-      }
-      continue;
-    }
-
-    // 普通字符
-    current += ch;
-  }
-
-  if (current) {
-    tokens.push({ text: current, type: classifyToken(current) });
-  }
-
-  return tokens.length > 0 ? tokens : [{ text: " ", type: "empty" }];
-}
-
-function classifyToken(token) {
-  const keywordSets = {
-    Java: ["for", "while", "if", "else", "do", "switch", "case", "break", "continue", "return", "int", "double", "float", "char", "String", "boolean", "void", "class", "public", "private", "static", "new", "true", "false", "null"],
-    Python: ["for", "while", "if", "else", "elif", "def", "class", "return", "import", "from", "True", "False", "None", "and", "or", "not", "in", "is", "try", "except", "finally", "with", "as", "yield", "lambda", "pass", "break", "continue"],
-    "C++": ["for", "while", "if", "else", "do", "switch", "case", "break", "continue", "return", "int", "double", "float", "char", "bool", "void", "class", "public", "private", "protected", "static", "const", "new", "delete", "true", "false", "nullptr", "auto", "virtual", "template", "typename"],
-    JavaScript: ["for", "while", "if", "else", "do", "switch", "case", "break", "continue", "return", "const", "let", "var", "function", "class", "new", "true", "false", "null", "undefined", "typeof", "instanceof", "async", "await", "import", "export", "default", "from", "try", "catch", "finally", "throw", "of", "in", "yield", "this", "super", "extends"],
-  };
-  const keywords = keywordSets[lang.value] || keywordSets.Java;
-
-  const builtinSets = {
-    Java: ["System", "Math", "String", "Scanner", "ArrayList", "HashMap"],
-    Python: ["print", "len", "range", "int", "str", "float", "list", "dict", "set", "type", "input", "sorted", "enumerate", "zip", "map", "filter", "sum", "max", "min"],
-    "C++": ["cout", "cin", "endl", "vector", "string", "map", "set", "pair", "sort", "reverse", "find", "max", "min"],
-    JavaScript: ["console", "Math", "Array", "Object", "Map", "Set", "Promise", "Date", "JSON", "parseInt", "parseFloat", "setTimeout", "setInterval", "fetch", "require"],
-  };
-  const builtins = builtinSets[lang.value] || builtinSets.Java;
-
-  if (keywords.includes(token)) {return "keyword";}
-  if (builtins.includes(token)) {return "builtin";}
-  if (/^\d+$/.test(token)) {return "number";}
-  if (/^[A-Z]/.test(token)) {return "type";}
-  if (token === " ") {return "space";}
-  return "identifier";
-}
 
 /**
  * 逐词对比当前输入行
  */
 function compareLineTokens(inputLine, lineIndex) {
-  const refLine = refLines.value[lineIndex] || "";
-  const refTokens = tokenizeLine(refLine);
-  const inputTokens = tokenizeLine(inputLine);
-
-  const result = [];
-  const maxLen = Math.max(refTokens.length, inputTokens.length);
-
-  for (let i = 0; i < maxLen; i++) {
-    const ref = refTokens[i];
-    const inp = inputTokens[i];
-
-    if (!inp) {
-      result.push({ text: ref.text, type: ref.type, status: "pending" });
-    } else if (!ref) {
-      result.push({ text: inp.text, type: inp.type, status: "extra" });
-    } else if (ref.text === inp.text) {
-      result.push({ text: inp.text, type: inp.type, status: "correct" });
-    } else {
-      result.push({ text: inp.text, type: inp.type, status: "wrong" });
-    }
-  }
-
-  return result;
+  const refTokens = tokenizeLine(refLines.value[lineIndex] || "", lang.value);
+  const inputTokens = tokenizeLine(inputLine, lang.value);
+  return diffLineTokens(refTokens, inputTokens, { includePending: true });
 }
 
 /**
@@ -500,35 +375,14 @@ function onInput() {
 
   const lineIndex = submittedLines.value.length;
   const refLine = refLines.value[lineIndex] || "";
-  const refTokens = tokenizeLine(refLine);
-  const inputTokens = tokenizeLine(currentLine.value);
-
-  const result = [];
-  const maxLen = Math.max(refTokens.length, inputTokens.length);
-
-  for (let i = 0; i < maxLen; i++) {
-    const ref = refTokens[i];
-    const inp = inputTokens[i];
-
-    if (!inp) {
-      // 还没输入到这
-    } else if (!ref) {
-      result.push({ text: inp.text, type: inp.type, status: "extra" });
-    } else if (ref.text === inp.text) {
-      result.push({ text: inp.text, type: inp.type, status: "correct" });
-    } else {
-      result.push({ text: inp.text, type: inp.type, status: "wrong" });
-    }
-  }
-
-  currentTokens.value = result;
+  currentTokens.value = diffLineTokens(
+    tokenizeLine(refLine, lang.value),
+    tokenizeLine(currentLine.value, lang.value),
+  );
 }
 
 function getLineStatus(lineIndex) {
-  const ref = refLines.value[lineIndex];
-  const input = submittedLines.value[lineIndex];
-  if (!ref || !input) {return "";}
-  return ref.trim() === input.trim() ? "✓" : "✗";
+  return lineEqualsTrimmed(refLines.value[lineIndex], submittedLines.value[lineIndex]);
 }
 
 function addTab() {

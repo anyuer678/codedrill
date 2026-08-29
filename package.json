@@ -2,7 +2,7 @@
   "name": "codedrill",
   "version": "1.1.0",
   "description": "Coding Reflex - 离线编程训练系统",
-  "author": "CodeDrill Team",
+  "author": "anyuer678",
   "private": true,
   "type": "module",
   "main": "electron/main.js",

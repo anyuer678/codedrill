@@ -31,8 +31,6 @@ function createWindow() {
     if (!fs.existsSync(indexPath)) {
       indexPath = path.join(__dirname, "..", "dist", "web", "index.html");
     }
-    console.log("Loading:", indexPath);
-    console.log("Exists:", fs.existsSync(indexPath));
     mainWindow.loadFile(indexPath);
   }
 

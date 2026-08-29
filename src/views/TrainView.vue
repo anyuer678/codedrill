@@ -1,51 +1,15 @@
 <template>
   <div class="train-layout">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <button
-          class="btn-back"
-          @click="goBack"
-        >
-          ← 返回
-        </button>
-        <span class="sidebar-title">{{ modeLabel }}</span>
-        <button
-          class="btn-help"
-          @click="showHelp = true"
-        >
-          ?
-        </button>
-      </div>
-      <div class="progress-section">
-        <div class="progress-info">
-          <span class="progress-text">
-            {{ trainingStore.currentIndex + 1 }} / {{ trainingStore.questions.length }}
-          </span>
-          <span class="progress-percent">{{ trainingStore.progress }}%</span>
-        </div>
-        <div class="progress-bar">
-          <div
-            class="progress-fill"
-            :style="{ width: trainingStore.progress + '%' }"
-          />
-        </div>
-      </div>
-      <div class="question-grid">
-        <button
-          v-for="(q, i) in trainingStore.questions"
-          :key="i"
-          class="q-btn"
-          :class="{
-            active: i === trainingStore.currentIndex,
-            correct: trainingStore.results[i]?.correct,
-            wrong: trainingStore.results[i] && !trainingStore.results[i].correct,
-          }"
-          @click="goTo(i)"
-        >
-          {{ i + 1 }}
-        </button>
-      </div>
-    </aside>
+    <TrainSidebar
+      :current-index="trainingStore.currentIndex"
+      :total="trainingStore.questions.length"
+      :progress="trainingStore.progress"
+      :results="trainingStore.results"
+      :mode-label="modeLabel"
+      @back="goBack"
+      @help="showHelp = true"
+      @go-to="goTo"
+    />
 
     <main class="main-area">
       <div class="code-panels">
@@ -131,45 +95,17 @@
         </div>
       </div>
 
-      <!-- 结果栏 -->
-      <div
-        v-if="showResult"
-        class="result-bar"
-        :class="resultOk ? 'result-ok' : 'result-fail'"
-      >
-        <span class="result-icon">{{ resultOk ? '✓' : '✗' }}</span>
-        <span class="result-text">{{ resultOk ? '正确' : '错误' }}</span>
-        <span class="result-time">{{ lastResult?.timeSpent?.toFixed(1) }}s</span>
-        <div class="result-actions">
-          <button
-            v-if="!resultOk"
-            class="btn btn-sm"
-            @click="showHint = !showHint"
-          >
-            提示
-          </button>
-          <button
-            v-if="!resultOk"
-            class="btn btn-sm"
-            @click="showDiff = !showDiff"
-          >
-            {{ showDiff ? '隐藏' : '对比' }}
-          </button>
-          <button
-            v-if="!resultOk"
-            class="btn btn-sm"
-            @click="retryQuestion"
-          >
-            重做
-          </button>
-          <button
-            class="btn"
-            @click="nextQ"
-          >
-            {{ isLast ? '完成' : '下一题' }}
-          </button>
-        </div>
-      </div>
+      <TrainResultBar
+        :visible="showResult"
+        :ok="resultOk"
+        :last-result="lastResult"
+        :is-last="isLast"
+        :show-diff="showDiff"
+        @toggle-hint="showHint = !showHint"
+        @toggle-diff="showDiff = !showDiff"
+        @retry="retryQuestion"
+        @next="nextQ"
+      />
 
       <!-- 差异对比 -->
       <div
@@ -201,33 +137,13 @@
       />
     </main>
 
-    <aside class="stats-panel">
-      <div class="stats-header">
-        统计
-      </div>
-      <div class="stats-list">
-        <div class="stat-row">
-          <span class="stat-label">正确</span>
-          <span class="stat-value ok">{{ trainingStore.sessionCorrect }}</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">错误</span>
-          <span class="stat-value fail">{{ trainingStore.sessionWrong }}</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">正确率</span>
-          <span class="stat-value">{{ trainingStore.sessionAccuracy }}%</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">平均用时</span>
-          <span class="stat-value">{{ trainingStore.avgTime }}s</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">打字速度</span>
-          <span class="stat-value">{{ typingSpeed }} CPM</span>
-        </div>
-      </div>
-    </aside>
+    <TrainStatsPanel
+      :correct="trainingStore.sessionCorrect"
+      :wrong="trainingStore.sessionWrong"
+      :accuracy="trainingStore.sessionAccuracy"
+      :avg-time="trainingStore.avgTime"
+      :typing-speed="typingSpeed"
+    />
 
     <!-- 快捷键帮助弹窗 -->
     <div
@@ -285,6 +201,9 @@ import { formatTime } from "@/lib/timer";
 import { useShortcuts } from "@/lib/shortcuts";
 import CodeDisplay from "@/components/CodeDisplay.vue";
 import DiffView from "@/components/DiffView.vue";
+import TrainSidebar from "@/components/TrainSidebar.vue";
+import TrainStatsPanel from "@/components/TrainStatsPanel.vue";
+import TrainResultBar from "@/components/TrainResultBar.vue";
 import CompletionPopup from "@/components/CompletionPopup.vue";
 import { getCompletions } from "@/lib/completionService";
 import { tokenizeLine, diffLineTokens, lineEqualsTrimmed } from "@/lib/trainTyping";
@@ -470,142 +389,6 @@ onMounted(async () => {
   overflow: hidden;
 }
 
-.sidebar {
-  width: 200px;
-  background: var(--bg-card);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-}
-
-.sidebar-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--border);
-}
-
-.btn-back {
-  background: none;
-  border: none;
-  color: var(--accent-10);
-  cursor: pointer;
-  font-size: var(--text-sm);
-  font-weight: 500;
-  font-family: var(--font);
-  padding: 0;
-}
-
-.sidebar-title {
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--text-900);
-  flex: 1;
-}
-
-.btn-help {
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-400);
-  cursor: pointer;
-  padding: 0;
-}
-
-.btn-help:hover {
-  background: var(--border-light);
-  color: var(--text-700);
-}
-
-.progress-section {
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--border);
-}
-
-.progress-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-2);
-}
-
-.progress-text {
-  font-size: var(--text-xs);
-  color: var(--text-400);
-  font-family: var(--mono);
-}
-
-.progress-percent {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  font-family: var(--mono);
-  color: var(--accent-10);
-}
-
-.progress-bar {
-  height: 4px;
-  background: var(--border-light);
-  border-radius: 2px;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--accent-10);
-  border-radius: 2px;
-  transition: width 300ms ease;
-}
-
-.question-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-2);
-  padding: var(--space-3);
-  overflow-y: auto;
-  flex: 1;
-}
-
-.q-btn {
-  padding: var(--space-2);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  font-family: var(--mono);
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  color: var(--text-700);
-}
-
-.q-btn:hover {
-  border-color: var(--text-400);
-}
-
-.q-btn.active {
-  background: var(--accent-10);
-  border-color: var(--accent-10);
-  color: white;
-}
-
-.q-btn.correct {
-  background: var(--correct);
-  border-color: var(--correct);
-  color: white;
-}
-
-.q-btn.wrong {
-  background: var(--incorrect);
-  border-color: var(--incorrect);
-  color: white;
-}
 
 .main-area {
   flex: 1;
@@ -841,100 +624,10 @@ onMounted(async () => {
   transform: translateY(0);
 }
 
-.result-bar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-top: 1px solid var(--border);
-  flex-shrink: 0;
-}
-
-.result-ok {
-  background: var(--correct-bg);
-}
-
-.result-fail {
-  background: var(--incorrect-bg);
-}
-
-.result-icon {
-  font-weight: 700;
-  font-size: var(--text-lg);
-}
-
-.result-ok .result-icon { color: var(--correct); }
-.result-fail .result-icon { color: var(--incorrect); }
-
-.result-text {
-  font-weight: 600;
-  font-size: var(--text-sm);
-}
-
-.result-ok .result-text { color: var(--correct); }
-.result-fail .result-text { color: var(--incorrect); }
-
-.result-time {
-  flex: 1;
-  font-size: var(--text-xs);
-  color: var(--text-400);
-  font-family: var(--mono);
-}
-
-.result-actions {
-  display: flex;
-  gap: var(--space-2);
-}
 
 .btn-sm {
   padding: var(--space-1) var(--space-3);
   font-size: var(--text-xs);
-}
-
-/* 差异对比面板 */
-.diff-panel {
-  border-top: 1px solid var(--border);
-  background: var(--bg-card);
-}
-
-.diff-header {
-  padding: var(--space-2) var(--space-4);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--text-500);
-  background: var(--border-light);
-  border-bottom: 1px solid var(--border);
-}
-
-.diff-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--border);
-}
-
-.diff-side {
-  background: var(--bg-card);
-}
-
-.diff-label {
-  padding: var(--space-2) var(--space-3);
-  font-size: var(--text-xs);
-  color: var(--text-400);
-  background: var(--border-light);
-  border-bottom: 1px solid var(--border);
-}
-
-.diff-code {
-  padding: var(--space-3);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  line-height: 1.5;
-  margin: 0;
-  white-space: pre-wrap;
-  word-break: break-all;
-  max-height: 200px;
-  overflow-y: auto;
 }
 
 /* 提示 */
@@ -958,48 +651,6 @@ onMounted(async () => {
   line-height: 1.5;
 }
 
-.stats-panel {
-  width: 160px;
-  background: var(--bg-card);
-  border-left: 1px solid var(--border);
-  flex-shrink: 0;
-}
-
-.stats-header {
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--border);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--text-500);
-  text-transform: uppercase;
-}
-
-.stats-list {
-  padding: var(--space-3);
-}
-
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-3);
-  border-bottom: 1px solid var(--border-light);
-}
-
-.stat-label {
-  font-size: var(--text-xs);
-  color: var(--text-400);
-}
-
-.stat-value {
-  font-size: var(--text-base);
-  font-weight: 700;
-  font-family: var(--mono);
-  color: var(--text-900);
-}
-
-.stat-value.ok { color: var(--correct); }
-.stat-value.fail { color: var(--incorrect); }
 
 /* 快捷键帮助弹窗 */
 .modal-overlay {

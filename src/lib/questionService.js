@@ -3,53 +3,53 @@
  * 负责加载题库、生成题目、管理本地数据
  */
 
-import codeDb from "@/data/code_db.json";
-import templates from "@/data/templates.json";
-import errorPatterns from "@/data/error_patterns.json";
-import fillPoints from "@/data/fill_points.json";
+import codeDb from "../../core/code_db.json";
+import templates from "../../core/templates.json";
+import errorPatterns from "../../core/error_patterns.json";
+import fillPoints from "../../core/fill_points.json";
 import { injectError } from "./templateEngine";
 
-import javaLoop from "@/data/questions/java_loop.json";
-import javaCondition from "@/data/questions/java_condition.json";
-import javaArray from "@/data/questions/java_array.json";
-import javaString from "@/data/questions/java_string.json";
-import javaFunction from "@/data/questions/java_function.json";
+import javaLoop from "../../core/questions/java_loop.json";
+import javaCondition from "../../core/questions/java_condition.json";
+import javaArray from "../../core/questions/java_array.json";
+import javaString from "../../core/questions/java_string.json";
+import javaFunction from "../../core/questions/java_function.json";
 
-import pythonLoop from "@/data/questions/python_loop.json";
-import pythonCondition from "@/data/questions/python_condition.json";
-import pythonArray from "@/data/questions/python_array.json";
-import pythonString from "@/data/questions/python_string.json";
-import pythonFunction from "@/data/questions/python_function.json";
+import pythonLoop from "../../core/questions/python_loop.json";
+import pythonCondition from "../../core/questions/python_condition.json";
+import pythonArray from "../../core/questions/python_array.json";
+import pythonString from "../../core/questions/python_string.json";
+import pythonFunction from "../../core/questions/python_function.json";
 
-import cppLoop from "@/data/questions/cpp_loop.json";
-import cppCondition from "@/data/questions/cpp_condition.json";
-import cppArray from "@/data/questions/cpp_array.json";
-import cppString from "@/data/questions/cpp_string.json";
-import cppFunction from "@/data/questions/cpp_function.json";
+import cppLoop from "../../core/questions/cpp_loop.json";
+import cppCondition from "../../core/questions/cpp_condition.json";
+import cppArray from "../../core/questions/cpp_array.json";
+import cppString from "../../core/questions/cpp_string.json";
+import cppFunction from "../../core/questions/cpp_function.json";
 
-import jsLoop from "@/data/questions/javascript_loop.json";
-import jsCondition from "@/data/questions/javascript_condition.json";
-import jsArray from "@/data/questions/javascript_array.json";
-import jsString from "@/data/questions/javascript_string.json";
-import jsFunction from "@/data/questions/javascript_function.json";
+import jsLoop from "../../core/questions/javascript_loop.json";
+import jsCondition from "../../core/questions/javascript_condition.json";
+import jsArray from "../../core/questions/javascript_array.json";
+import jsString from "../../core/questions/javascript_string.json";
+import jsFunction from "../../core/questions/javascript_function.json";
 
-import tsLoop from "@/data/questions/typescript_loop.json";
-import tsCondition from "@/data/questions/typescript_condition.json";
-import tsArray from "@/data/questions/typescript_array.json";
-import tsString from "@/data/questions/typescript_string.json";
-import tsFunction from "@/data/questions/typescript_function.json";
+import tsLoop from "../../core/questions/typescript_loop.json";
+import tsCondition from "../../core/questions/typescript_condition.json";
+import tsArray from "../../core/questions/typescript_array.json";
+import tsString from "../../core/questions/typescript_string.json";
+import tsFunction from "../../core/questions/typescript_function.json";
 
-import linuxLoop from "@/data/questions/linux_loop.json";
-import linuxCondition from "@/data/questions/linux_condition.json";
-import linuxArray from "@/data/questions/linux_array.json";
-import linuxString from "@/data/questions/linux_string.json";
-import linuxFunction from "@/data/questions/linux_function.json";
+import linuxLoop from "../../core/questions/linux_loop.json";
+import linuxCondition from "../../core/questions/linux_condition.json";
+import linuxArray from "../../core/questions/linux_array.json";
+import linuxString from "../../core/questions/linux_string.json";
+import linuxFunction from "../../core/questions/linux_function.json";
 
-import sqlLoop from "@/data/questions/sql_loop.json";
-import sqlCondition from "@/data/questions/sql_condition.json";
-import sqlArray from "@/data/questions/sql_array.json";
-import sqlString from "@/data/questions/sql_string.json";
-import sqlFunction from "@/data/questions/sql_function.json";
+import sqlLoop from "../../core/questions/sql_loop.json";
+import sqlCondition from "../../core/questions/sql_condition.json";
+import sqlArray from "../../core/questions/sql_array.json";
+import sqlString from "../../core/questions/sql_string.json";
+import sqlFunction from "../../core/questions/sql_function.json";
 
 function wrapQuestions(data) {
   if (!data || !data.questions) {

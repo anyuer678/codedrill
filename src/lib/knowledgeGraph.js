@@ -3,7 +3,7 @@
  * 管理编程知识点的关联关系
  */
 
-import knowledgeGraphData from "@/data/knowledge_graph.json";
+import knowledgeGraphData from "../../core/knowledge_graph.json";
 
 class KnowledgeGraph {
   constructor() {

@@ -161,6 +161,7 @@ import { ref, computed, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { getDueCards, reviewCard, getSrsStats, importFromWrongBook } from "@/lib/spacedRepetition";
 import { getWrongQuestions } from "@/lib/questionBank";
+import { tokenizeLine } from "@/lib/trainTyping";
 
 const router = useRouter();
 const inputRef = ref(null);
@@ -211,21 +212,6 @@ function importWrong() {
   importFromWrongBook(wrongQuestions);
   loadStats();
   loadDueCards();
-}
-
-function tokenizeLine(line) {
-  const tokens = [];
-  let current = "";
-  for (const ch of line) {
-    if (/[a-zA-Z0-9_]/.test(ch)) {
-      current += ch;
-    } else {
-      if (current) { tokens.push({ text: current, type: "identifier" }); current = ""; }
-      tokens.push({ text: ch, type: "punctuation" });
-    }
-  }
-  if (current) {tokens.push({ text: current, type: "identifier" });}
-  return tokens.length > 0 ? tokens : [{ text: " ", type: "empty" }];
 }
 
 function onInput() {

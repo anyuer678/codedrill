@@ -243,6 +243,7 @@ import { useTrainingStore } from "@/stores/training";
 import { formatTime } from "@/lib/timer";
 import { useShortcuts } from "@/lib/shortcuts";
 import { getQuestions, generateFillQuestions, generateDebugQuestions } from "@/lib/questionService";
+import { tokenizeLine } from "@/lib/trainTyping";
 
 const router = useRouter();
 const store = useTrainingStore();
@@ -396,29 +397,6 @@ function finishChallenge() {
   });
 }
 
-function tokenizeLine(line) {
-  const tokens = [];
-  let current = "";
-  for (const ch of line) {
-    if (/[a-zA-Z0-9_]/.test(ch)) {
-      current += ch;
-    } else {
-      if (current) { tokens.push({ text: current, type: classifyToken(current) }); current = ""; }
-      tokens.push({ text: ch, type: "punctuation" });
-    }
-  }
-  if (current) {tokens.push({ text: current, type: classifyToken(current) });}
-  return tokens.length > 0 ? tokens : [{ text: " ", type: "empty" }];
-}
-
-function classifyToken(token) {
-  const keywords = ["for", "while", "if", "else", "do", "switch", "case", "break", "continue", "return", "int", "double", "float", "char", "String", "boolean", "void", "class", "public", "private", "static", "new", "true", "false", "null", "const", "let", "var", "function", "def", "import", "from"];
-  if (keywords.includes(token)) {return "keyword";}
-  if (/^\d+$/.test(token)) {return "number";}
-  if (/^[A-Z]/.test(token)) {return "type";}
-  return "identifier";
-}
-
 function onInput() {
   const lineIndex = submittedLines.value.length;
   const refLine = refLines.value[lineIndex] || "";
@@ -540,9 +518,12 @@ onUnmounted(() => clearInterval(timerInterval));
 .line-text.correct { color: #4ade80; }
 .line-text.wrong { color: #f87171; }
 .token.keyword { color: #569cd6; }
+.token.builtin { color: #4ec9b0; }
+.token.string { color: #ce9178; }
 .token.number { color: #b5cea8; }
 .token.type { color: #4ec9b0; }
-.token.punctuation { color: #d4d4d4; }
+.token.delimiter { color: #d4d4d4; }
+.token.identifier { color: #d4d4d4; }
 .token.correct { color: #4ade80; }
 .token.wrong { color: #f87171; text-decoration: underline wavy; }
 .token.extra { color: #f59e0b; }

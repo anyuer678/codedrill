@@ -288,6 +288,7 @@ import DiffView from "@/components/DiffView.vue";
 import CompletionPopup from "@/components/CompletionPopup.vue";
 import { getCompletions } from "@/lib/completionService";
 import { tokenizeLine, diffLineTokens, lineEqualsTrimmed } from "@/lib/trainTyping";
+import { useTypingSession } from "@/lib/useTypingSession";
 
 const route = useRoute();
 const router = useRouter();
@@ -309,17 +310,12 @@ onUnmounted(() => {
 });
 
 const inputRef = ref(null);
-const currentLine = ref("");
-const submittedLines = ref([]);
 const showResult = ref(false);
 const lastResult = ref(null);
 const resultOk = ref(false);
-const currentTokens = ref([]);
 const showHelp = ref(false);
 const showDiff = ref(false);
 const showHint = ref(false);
-const completions = ref([]);
-const completionPosition = ref({ top: 0, left: 0 });
 const completionRef = ref(null);
 
 const mode = computed(() => route.params.mode || "copy");
@@ -345,107 +341,28 @@ const refCode = computed(() => {
 const refLines = computed(() => refCode.value.split("\n"));
 const isLast = computed(() => trainingStore.currentIndex >= trainingStore.questions.length - 1);
 
-// 打字速度（字符/分钟）
-const totalChars = ref(0);
-const typingSpeed = computed(() => {
-  const elapsed = trainingStore.elapsedTime;
-  if (elapsed <= 0) {return 0;}
-  return Math.round((totalChars.value / elapsed) * 60);
+// 输入行状态机（抽到 lib/useTypingSession.js）
+const {
+  currentLine, submittedLines, currentTokens, typingSpeed,
+  completions, completionPosition,
+  onInput, addTab, handleBackspace, acceptCompletion,
+  submitLine, resetInput, flushCurrentLine,
+} = useTypingSession({
+  lang, refLines, refCode, inputRef,
+  onSubmitAll: () => doSubmit(),
+  getElapsedSeconds: () => trainingStore.elapsedTime,
 });
 
-
-/**
- * 逐词对比当前输入行
- */
+// 已提交行的逐词对比展示
 function compareLineTokens(inputLine, lineIndex) {
   const refTokens = tokenizeLine(refLines.value[lineIndex] || "", lang.value);
   const inputTokens = tokenizeLine(inputLine, lang.value);
   return diffLineTokens(refTokens, inputTokens, { includePending: true });
 }
 
-/**
- * 实时计算当前输入的逐词状态
- */
-function onInput() {
-  // 更新打字字符数
-  totalChars.value = submittedLines.value.join("").length + currentLine.value.length;
-
-  // 获取补全建议
-  updateCompletions();
-
-  const lineIndex = submittedLines.value.length;
-  const refLine = refLines.value[lineIndex] || "";
-  currentTokens.value = diffLineTokens(
-    tokenizeLine(refLine, lang.value),
-    tokenizeLine(currentLine.value, lang.value),
-  );
-}
-
-function getLineStatus(lineIndex) {
-  return lineEqualsTrimmed(refLines.value[lineIndex], submittedLines.value[lineIndex]);
-}
-
-function addTab() {
-  currentLine.value += "    ";
-  onInput();
-}
-
-function handleBackspace() {
-  if (currentLine.value === "" && submittedLines.value.length > 0) {
-    currentLine.value = submittedLines.value.pop();
-    onInput();
-  }
-  completions.value = [];
-}
-
-function updateCompletions() {
-  const suggestions = getCompletions(
-    currentLine.value,
-    currentLine.value.length,
-    lang.value,
-    { expectedCode: refCode.value },
-  );
-  completions.value = suggestions;
-
-  // 计算弹窗位置
-  if (suggestions.length > 0 && inputRef.value) {
-    const rect = inputRef.value.getBoundingClientRect();
-    completionPosition.value = {
-      top: rect.bottom + 4,
-      left: rect.left,
-    };
-  }
-}
-
-function acceptCompletion(item) {
-  const current = currentLine.value;
-  const lastWord = current.match(/[a-zA-Z_]\w*$/);
-  if (lastWord) {
-    currentLine.value = current.slice(0, current.length - lastWord[0].length) + item.text;
-  } else {
-    currentLine.value += item.text;
-  }
-  completions.value = [];
-  onInput();
-}
-
-function submitLine() {
-  submittedLines.value.push(currentLine.value);
-  currentLine.value = "";
-  currentTokens.value = [];
-
-  if (submittedLines.value.length >= refLines.value.length) {
-    doSubmit();
-  }
-}
-
 function doSubmit() {
   // 如果还有未提交的行，先提交当前行
-  if (currentLine.value.trim()) {
-    submittedLines.value.push(currentLine.value);
-    currentLine.value = "";
-    currentTokens.value = [];
-  }
+  flushCurrentLine();
   const userCode = submittedLines.value.join("\n");
   const result = trainingStore.submitAnswer(userCode);
   if (result) {
@@ -476,9 +393,7 @@ function nextQ() {
   showResult.value = false;
   showDiff.value = false;
   lastResult.value = null;
-  submittedLines.value = [];
-  currentLine.value = "";
-  currentTokens.value = [];
+  resetInput();
   if (done) {
     router.push("/summary");
   }
@@ -489,17 +404,13 @@ function retryQuestion() {
   showResult.value = false;
   showDiff.value = false;
   lastResult.value = null;
-  submittedLines.value = [];
-  currentLine.value = "";
-  currentTokens.value = [];
+  resetInput();
   nextTick(() => inputRef.value?.focus());
 }
 
 function goTo(i) {
   trainingStore.goToQuestion(i);
-  submittedLines.value = [];
-  currentLine.value = "";
-  currentTokens.value = [];
+  resetInput();
   showResult.value = false;
   showDiff.value = false;
 }

@@ -1,6 +1,8 @@
 /**
  * 题目数据服务
  * 负责加载题库、生成题目、管理本地数据
+ * 
+ * 题库 JSON 按需动态加载（Vite 自动 code-split），避免全量打进首屏。
  */
 
 import codeDb from "../../core/code_db.json";
@@ -9,47 +11,63 @@ import errorPatterns from "../../core/error_patterns.json";
 import fillPoints from "../../core/fill_points.json";
 import { injectError } from "./templateEngine";
 
-import javaLoop from "../../core/questions/java_loop.json";
-import javaCondition from "../../core/questions/java_condition.json";
-import javaArray from "../../core/questions/java_array.json";
-import javaString from "../../core/questions/java_string.json";
-import javaFunction from "../../core/questions/java_function.json";
+// ---- 懒加载：动态 import 映射 ----
 
-import pythonLoop from "../../core/questions/python_loop.json";
-import pythonCondition from "../../core/questions/python_condition.json";
-import pythonArray from "../../core/questions/python_array.json";
-import pythonString from "../../core/questions/python_string.json";
-import pythonFunction from "../../core/questions/python_function.json";
+const importMap = {
+  Java: {
+    loop: () => import("../../core/questions/java_loop.json"),
+    condition: () => import("../../core/questions/java_condition.json"),
+    array: () => import("../../core/questions/java_array.json"),
+    string: () => import("../../core/questions/java_string.json"),
+    function: () => import("../../core/questions/java_function.json"),
+  },
+  Python: {
+    loop: () => import("../../core/questions/python_loop.json"),
+    condition: () => import("../../core/questions/python_condition.json"),
+    array: () => import("../../core/questions/python_array.json"),
+    string: () => import("../../core/questions/python_string.json"),
+    function: () => import("../../core/questions/python_function.json"),
+  },
+  "C++": {
+    loop: () => import("../../core/questions/cpp_loop.json"),
+    condition: () => import("../../core/questions/cpp_condition.json"),
+    array: () => import("../../core/questions/cpp_array.json"),
+    string: () => import("../../core/questions/cpp_string.json"),
+    function: () => import("../../core/questions/cpp_function.json"),
+  },
+  JavaScript: {
+    loop: () => import("../../core/questions/javascript_loop.json"),
+    condition: () => import("../../core/questions/javascript_condition.json"),
+    array: () => import("../../core/questions/javascript_array.json"),
+    string: () => import("../../core/questions/javascript_string.json"),
+    function: () => import("../../core/questions/javascript_function.json"),
+  },
+  TypeScript: {
+    loop: () => import("../../core/questions/typescript_loop.json"),
+    condition: () => import("../../core/questions/typescript_condition.json"),
+    array: () => import("../../core/questions/typescript_array.json"),
+    string: () => import("../../core/questions/typescript_string.json"),
+    function: () => import("../../core/questions/typescript_function.json"),
+  },
+  Bash: {
+    loop: () => import("../../core/questions/bash_loop.json"),
+    condition: () => import("../../core/questions/bash_condition.json"),
+    array: () => import("../../core/questions/bash_array.json"),
+    string: () => import("../../core/questions/bash_string.json"),
+    function: () => import("../../core/questions/bash_function.json"),
+  },
+  SQL: {
+    loop: () => import("../../core/questions/sql_loop.json"),
+    condition: () => import("../../core/questions/sql_condition.json"),
+    array: () => import("../../core/questions/sql_array.json"),
+    string: () => import("../../core/questions/sql_string.json"),
+    function: () => import("../../core/questions/sql_function.json"),
+  },
+};
 
-import cppLoop from "../../core/questions/cpp_loop.json";
-import cppCondition from "../../core/questions/cpp_condition.json";
-import cppArray from "../../core/questions/cpp_array.json";
-import cppString from "../../core/questions/cpp_string.json";
-import cppFunction from "../../core/questions/cpp_function.json";
+// ---- 缓存：已加载的模块 ----
 
-import jsLoop from "../../core/questions/javascript_loop.json";
-import jsCondition from "../../core/questions/javascript_condition.json";
-import jsArray from "../../core/questions/javascript_array.json";
-import jsString from "../../core/questions/javascript_string.json";
-import jsFunction from "../../core/questions/javascript_function.json";
-
-import tsLoop from "../../core/questions/typescript_loop.json";
-import tsCondition from "../../core/questions/typescript_condition.json";
-import tsArray from "../../core/questions/typescript_array.json";
-import tsString from "../../core/questions/typescript_string.json";
-import tsFunction from "../../core/questions/typescript_function.json";
-
-import bashLoop from "../../core/questions/bash_loop.json";
-import bashCondition from "../../core/questions/bash_condition.json";
-import bashArray from "../../core/questions/bash_array.json";
-import bashString from "../../core/questions/bash_string.json";
-import bashFunction from "../../core/questions/bash_function.json";
-
-import sqlLoop from "../../core/questions/sql_loop.json";
-import sqlCondition from "../../core/questions/sql_condition.json";
-import sqlArray from "../../core/questions/sql_array.json";
-import sqlString from "../../core/questions/sql_string.json";
-import sqlFunction from "../../core/questions/sql_function.json";
+const cache = {}; // { "Java:loop": [{...}, ...], ... }
 
 function wrapQuestions(data) {
   if (!data || !data.questions) {
@@ -62,72 +80,39 @@ function wrapQuestions(data) {
   }));
 }
 
+async function ensureLoaded(lang, mod) {
+  const key = `${lang}:${mod}`;
+  if (cache[key]) return;
+
+  const loader = importMap[lang]?.[mod];
+  if (!loader) {
+    cache[key] = [];
+    return;
+  }
+
+  const mod_ = await loader();
+  const default_ = mod_.default || mod_;
+  const questions = wrapQuestions(default_);
+
+  // class 使用 function 题库，io 使用 array 题库
+  cache[key] = questions;
+  if (mod === "function") {
+    cache[`${lang}:class`] = questions;
+  }
+  if (mod === "array") {
+    cache[`${lang}:io`] = questions;
+  }
+}
+
+async function ensureLangLoaded(lang) {
+  const mods = importMap[lang];
+  if (!mods) return;
+  await Promise.all(Object.keys(mods).map((m) => ensureLoaded(lang, m)));
+}
+
+// ---- 状态（保留兼容） ----
+
 const state = {
-  questions: {
-    Java: {
-      loop: wrapQuestions(javaLoop),
-      condition: wrapQuestions(javaCondition),
-      array: wrapQuestions(javaArray),
-      string: wrapQuestions(javaString),
-      function: wrapQuestions(javaFunction),
-      class: wrapQuestions(javaFunction),  // class 使用 function 题库
-      io: wrapQuestions(javaArray),  // io 使用 array 题库
-    },
-    Python: {
-      loop: wrapQuestions(pythonLoop),
-      condition: wrapQuestions(pythonCondition),
-      array: wrapQuestions(pythonArray),
-      string: wrapQuestions(pythonString),
-      function: wrapQuestions(pythonFunction),
-      class: wrapQuestions(pythonFunction),
-      io: wrapQuestions(pythonArray),
-    },
-    "C++": {
-      loop: wrapQuestions(cppLoop),
-      condition: wrapQuestions(cppCondition),
-      array: wrapQuestions(cppArray),
-      string: wrapQuestions(cppString),
-      function: wrapQuestions(cppFunction),
-      class: wrapQuestions(cppFunction),
-      io: wrapQuestions(cppArray),
-    },
-    JavaScript: {
-      loop: wrapQuestions(jsLoop),
-      condition: wrapQuestions(jsCondition),
-      array: wrapQuestions(jsArray),
-      string: wrapQuestions(jsString),
-      function: wrapQuestions(jsFunction),
-      class: wrapQuestions(jsFunction),
-      io: wrapQuestions(jsArray),
-    },
-    TypeScript: {
-      loop: wrapQuestions(tsLoop),
-      condition: wrapQuestions(tsCondition),
-      array: wrapQuestions(tsArray),
-      string: wrapQuestions(tsString),
-      function: wrapQuestions(tsFunction),
-      class: wrapQuestions(tsFunction),
-      io: wrapQuestions(tsArray),
-    },
-    Bash: {
-      loop: wrapQuestions(bashLoop),
-      condition: wrapQuestions(bashCondition),
-      array: wrapQuestions(bashArray),
-      string: wrapQuestions(bashString),
-      function: wrapQuestions(bashFunction),
-      class: wrapQuestions(bashFunction),
-      io: wrapQuestions(bashArray),
-    },
-    SQL: {
-      loop: wrapQuestions(sqlLoop),
-      condition: wrapQuestions(sqlCondition),
-      array: wrapQuestions(sqlArray),
-      string: wrapQuestions(sqlString),
-      function: wrapQuestions(sqlFunction),
-      class: wrapQuestions(sqlFunction),
-      io: wrapQuestions(sqlArray),
-    },
-  },
   templates: templates.templates || {},
   errorPatterns: errorPatterns.patterns || [],
   fillPoints: fillPoints.blank_positions || [],
@@ -135,7 +120,8 @@ const state = {
 };
 
 export async function getQuestions(language, module, count = 10, difficulty = null) {
-  let pool = state.questions[language]?.[module] || [];
+  await ensureLoaded(language, module);
+  let pool = cache[`${language}:${module}`] || [];
 
   if (difficulty) {
     pool = pool.filter((q) => q.difficulty === difficulty);
@@ -168,10 +154,11 @@ export async function generateFillQuestions(language, module, count = 10) {
 }
 
 export async function generateDebugQuestions(language, count = 10) {
+  await ensureLangLoaded(language);
   const allQuestions = [];
 
   for (const mod of codeDb.modules) {
-    const pool = state.questions[language]?.[mod] || [];
+    const pool = cache[`${language}:${mod}`] || [];
     allQuestions.push(...pool);
   }
 

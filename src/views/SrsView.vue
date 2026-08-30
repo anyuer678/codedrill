@@ -239,6 +239,7 @@ function onInput() {
 }
 
 function handleKeydown(e) {
+  if (e.isComposing) return; // IME 输入法组合中，不处理按键
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
     submitLine();

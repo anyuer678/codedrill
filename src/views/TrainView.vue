@@ -72,7 +72,7 @@
                 spellcheck="false"
                 autocomplete="off"
                 autocapitalize="off"
-                @keydown.enter.prevent="submitLine"
+                @keydown.enter.prevent="(e) => { if (!e.isComposing) submitLine() }"
                 @keydown.tab.prevent="addTab"
                 @keydown.backspace="handleBackspace"
                 @input="onInput"

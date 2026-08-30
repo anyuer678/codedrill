@@ -111,7 +111,7 @@
                 v-model="currentLine"
                 class="line-input"
                 spellcheck="false"
-                @keydown.enter.prevent="submitLine"
+                @keydown.enter.prevent="(e) => { if (!e.isComposing) submitLine() }"
                 @keydown.tab.prevent="addTab"
                 @keydown.backspace="handleBackspace"
               >

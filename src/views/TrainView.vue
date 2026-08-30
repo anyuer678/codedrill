@@ -292,13 +292,9 @@ function doSubmit() {
 }
 
 function saveProgress() {
-  // 保存当前输入状态
-  const progress = {
-    submittedLines: [...submittedLines.value],
-    currentLine: currentLine.value,
-    currentIndex: trainingStore.currentIndex,
-  };
-  localStorage.setItem("codedrill_train_progress", JSON.stringify(progress));
+  // 保存到 store 的 training_progress（会话恢复的唯一数据源，
+  // 原先另写一份无人读取的 codedrill_train_progress 死键已清理）
+  trainingStore.saveProgress();
   // 显示保存提示
   alert("进度已保存");
 }

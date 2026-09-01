@@ -36,7 +36,7 @@ export function tokenizeLine(line, lang = "Java") {
     // 字符串内
     if (inString) {
       current += ch;
-      if (ch === stringChar && line[i - 1] !== "\\") {
+      if (ch === stringChar && (i === 0 || line[i - 1] !== "\\") && (i < 2 || line[i - 2] !== "\\")) {
         tokens.push({ text: current, type: "string" });
         current = "";
         inString = false;
@@ -67,7 +67,7 @@ export function tokenizeLine(line, lang = "Java") {
     }
 
     // 分隔符
-    if (/[{}()\\[\];,.]/.test(ch)) {
+    if (/[{}()\[\];,.]/.test(ch)) {
       if (current) {
         tokens.push({ text: current, type: classifyToken(current, lang) });
         current = "";

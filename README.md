@@ -105,7 +105,7 @@ codedrill/
 │   ├── data/               # 静态数据
 │   └── lib/                # 工具函数
 ├── core/                   # 题库数据
-│   ├── questions/          # 225 道内置题目
+│   ├── questions/          # 635 道内置题目（35 个题库 JSON）
 │   └── bosses/             # Boss 关卡数据
 ├── public/                 # 静态资源（主题图、图标）
 ├── electron/               # Electron 主进程

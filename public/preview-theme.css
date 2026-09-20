@@ -84,8 +84,6 @@
   --img-land-10: url("theme-images/img-land-10.jpg");
   --img-land-11: url("theme-images/img-land-11.jpg");
   --img-land-12: url("theme-images/img-land-12.jpg");
-}
-
 .phone-paper-7{background-image:var(--img-p7);background-size:cover;background-position:center;background-repeat:no-repeat}
 .phone-paper-8{background-image:var(--img-p8);background-size:cover;background-position:center;background-repeat:no-repeat}
 .phone-paper-9{background-image:var(--img-p9);background-size:cover;background-position:center;background-repeat:no-repeat}
@@ -100,12 +98,13 @@
 .phone-paper-18{background-image:var(--img-p18);background-size:cover;background-position:center;background-repeat:no-repeat}
 .phone-paper-19{background-image:var(--img-p19);background-size:cover;background-position:center;background-repeat:no-repeat}
 .phone-paper-20{background-image:var(--img-p20);background-size:cover;background-position:center;background-repeat:no-repeat}
-
-:root {
+  /* 字体 */
   --font-body: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif: 'Noto Serif SC', 'Cormorant Garamond', serif;
   --font-display: 'Cormorant Garamond', 'Noto Serif SC', serif;
   --font-mono: 'JetBrains Mono', monospace;
+  /* CSS 变量由 _v25_assemble.py 注入 (img-p1..p20, img-t1..t4, img-il-XXX, img-i01..i30) */
+  /* 默认透明背景: 主题切换时可被覆盖 */
   --img-bg: transparent;
 }
 
@@ -486,14 +485,20 @@ body[data-theme^="portrait-"] .phone-screen{
    ============================================================ */
 
 /* === 1. 颜色覆写: 对齐 V27 调色板 === */
-:root {
-  --bg-page:        #faf6ed;
+:root, body {
+  --bg-page:        #faf6ed;   /* V27 暖奶油 */
   --bg-card:        rgba(250,246,237,0.92);
   --bg-card-2:      rgba(245,239,225,0.88);
   --card:           rgba(250,246,237,0.92);
   --border:         #e8e0d0;
   --border-soft:    #e8e0d0;
   --divider:        #e8dcc8;
+  --primary:        #5a6b3a;   /* V27 主绿 */
+  --primary-dark:   #3d4a25;
+  --primary-light:  rgba(90,107,58,0.12);
+  --accent:         #c9a35c;   /* V27 暖金 */
+  --accent-light:   rgba(201,163,92,0.15);
+  --secondary:      #3d5a5a;   /* V27 青灰 */
   --text-primary:   #2e2b24;
   --text-primary-dark: #1a1814;
   --text-secondary: #7d7566;
@@ -509,7 +514,10 @@ body[data-theme^="portrait-"] .phone-screen{
   --color-success:  #5a6e4a;
   --color-danger:   #a04a3a;
   --color-warning:  #c9a35c;
+  --font-body:      'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-heading:   'Noto Serif SC', 'Cormorant Garamond', serif;
+  --font-display:   'Cormorant Garamond', 'Noto Serif SC', serif;
+  --font-mono:      'JetBrains Mono', monospace;
   --font-serif-cn:  'Noto Serif SC', 'Source Han Serif SC', serif;
   --font-serif-en:  'Cormorant Garamond', 'Georgia', serif;
   --font-sans:      'Noto Sans SC', -apple-system, sans-serif;

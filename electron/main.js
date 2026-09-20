@@ -7,6 +7,7 @@ const isDev = !app.isPackaged;
 let mainWindow = null;
 
 function createWindow() {
+  const iconPath = path.join(__dirname, "..", "resources", "icon.png");
   mainWindow = new BrowserWindow({
     width: 1920,
     height: 1080,
@@ -14,6 +15,7 @@ function createWindow() {
     minHeight: 800,
     show: false,
     title: "CodeDrill",
+    icon: fs.existsSync(iconPath) ? iconPath : undefined,
     backgroundColor: "#F7F9FC",
     autoHideMenuBar: true,
     webPreferences: {

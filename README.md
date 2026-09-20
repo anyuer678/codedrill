@@ -134,10 +134,22 @@ codedrill/
 
 > **当前状态**：历史记录功能暂缓开发。后续将更换全新 UI 和架构，进行彻底重构。
 
-## 已知问题
+## 多端完成度矩阵（诚实声明）
 
-- 某些主题图片在构建时未正确解析，运行时动态加载
-- Electron 版本未配置应用图标，使用默认图标
+| 平台 | 状态 | 说明 |
+|------|------|------|
+| Web / 本机浏览器 | 主路径 | Vite 构建；GitHub Pages 预览功能受限 |
+| Windows（Electron） | 可构建 | `electron/` + `electron-builder`；**应用图标未配置** |
+| Android（Capacitor） | 骨架/部分 | 存在 `android/` 与 capacitor 配置；完整度以本机验证为准 |
+| iOS | 未承诺 | 本 README 不声称可用 |
+
+## 已知问题（跟踪于 Issues）
+
+- 主题图构建解析 → Issue #2
+- Electron 应用图标 → Issue #3
+- SRS/评分核心测试 → Issue #4
+- 历史记录功能暂缓，后续可能重构
+
 
 ## 免责声明
 

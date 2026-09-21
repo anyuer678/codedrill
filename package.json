@@ -64,7 +64,8 @@
     "appId": "com.codedrill.app",
     "productName": "CodeDrill",
     "directories": {
-      "output": "dist/electron-build"
+      "output": "dist/electron-build",
+      "buildResources": "resources"
     },
     "files": [
       "electron/**/*",
@@ -78,25 +79,36 @@
       {
         "from": "core/",
         "to": "core/",
-        "filter": ["**/*.json"]
+        "filter": [
+          "**/*.json"
+        ]
       }
     ],
     "win": {
       "target": [
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
-      ]
+      ],
+      "icon": "resources/icon.ico"
     },
     "portable": {
       "artifactName": "CodeDrill-便携版.exe"
     },
     "mac": {
-      "target": ["dmg"]
+      "target": [
+        "dmg"
+      ],
+      "icon": "resources/icon.png"
     },
     "linux": {
-      "target": ["AppImage"]
+      "target": [
+        "AppImage"
+      ],
+      "icon": "resources/icon.png"
     }
   }
 }

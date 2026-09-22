@@ -1,6 +1,11 @@
 /**
- * 训练记录管理器
- * 负责记录、查询、统计训练数据
+ * 训练记录管理器（最小稳定历史存储）
+ *
+ * 设计边界（诚实声明，见 README「学习记录」）：
+ * - 后端 = localStorage（key: codedrill_history / codedrill_stats），无 IndexedDB / 无云同步
+ * - 上限 MAX_HISTORY=500 条（超出丢弃最旧）
+ * - 导出/清空/列表 API 稳定；完整 UI 重构（Issue #1 中「彻底重构」）已冻结，不在本模块范围
+ * - schemaVersion 用于将来迁移；未知字段透传，不因扩展而崩溃
  */
 
 import { storage } from "./utils";
@@ -8,17 +13,45 @@ import { STORAGE_KEYS } from "./constants";
 
 const MAX_HISTORY = 500;
 
+/** 训练记录 schema 版本（写入时打标；读取时兼容无版本旧数据） */
+export const HISTORY_SCHEMA_VERSION = 1;
+
+/** 导出文件格式版本（exportHistoryJSON 顶层 version） */
+export const EXPORT_FORMAT_VERSION = "1.1";
+
+function normalizeRecord(raw) {
+  if (!raw || typeof raw !== "object") {
+    return null;
+  }
+  if (!raw.timestamp) {
+    return null;
+  }
+  return {
+    schemaVersion: HISTORY_SCHEMA_VERSION,
+    ...raw,
+    total: Number(raw.total) || 0,
+    correct: Number(raw.correct) || 0,
+    accuracy: Number(raw.accuracy) || 0,
+    totalTime: Number(raw.totalTime) || 0,
+    questions: Array.isArray(raw.questions) ? raw.questions : [],
+  };
+}
+
 /**
  * 记录一次训练会话
+ * sessionData 至少应含 { mode, language, total, correct, accuracy, totalTime }
  */
 export function recordSession(sessionData) {
-  const history = getHistory();
+  const history = getHistory(MAX_HISTORY);
 
-  const record = {
-    id: `session_${Date.now()}`,
+  const record = normalizeRecord({
+    id: `session_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
     timestamp: new Date().toISOString(),
     ...sessionData,
-  };
+  });
+  if (!record) {
+    return null;
+  }
 
   history.unshift(record);
 
@@ -33,10 +66,22 @@ export function recordSession(sessionData) {
 }
 
 /**
- * 获取训练历史
+ * 获取训练历史（按时间倒序的本地副本；limit 默认 100）
  */
 export function getHistory(limit = 100) {
-  return storage.get(STORAGE_KEYS.HISTORY, []).slice(0, limit);
+  const raw = storage.get(STORAGE_KEYS.HISTORY, []);
+  if (!Array.isArray(raw)) {
+    return [];
+  }
+  return raw
+    .map(normalizeRecord)
+    .filter(Boolean)
+    .slice(0, limit);
+}
+
+/** 当前本地历史条数（忽略损坏项） */
+export function getHistoryCount() {
+  return getHistory(MAX_HISTORY).length;
 }
 
 /**
@@ -224,20 +269,65 @@ export function getStreak() {
 }
 
 /**
- * 清除所有记录
+ * 清除所有记录（历史 + 汇总统计）
  */
 export function clearAll() {
   storage.remove(STORAGE_KEYS.HISTORY);
   storage.remove(STORAGE_KEYS.STATS);
 }
 
+/**
+ * 仅清除训练历史（保留 stats 汇总；用于 History 页「清空历史」）
+ * @returns {number} 被清除的条数
+ */
+export function clearHistory() {
+  const n = getHistoryCount();
+  storage.remove(STORAGE_KEYS.HISTORY);
+  return n;
+}
+
+/**
+ * 构建可序列化的历史导出对象（纯数据，不触发下载）。
+ * 供 exportService / HistoryView / 测试复用。
+ */
+export function buildHistoryExport() {
+  const history = getHistory(MAX_HISTORY);
+  return {
+    kind: "codedrill.history",
+    version: EXPORT_FORMAT_VERSION,
+    schemaVersion: HISTORY_SCHEMA_VERSION,
+    exportedAt: new Date().toISOString(),
+    count: history.length,
+    limits: {
+      storage: "localStorage",
+      maxRecords: MAX_HISTORY,
+      note: "本机浏览器存储；无云同步；清除站点数据会丢失",
+    },
+    history,
+    stats: storage.get(STORAGE_KEYS.STATS, {}),
+  };
+}
+
+/**
+ * 导出历史为 JSON 字符串
+ */
+export function exportHistoryJSON() {
+  return JSON.stringify(buildHistoryExport(), null, 2);
+}
+
 export default {
   recordSession,
   getHistory,
+  getHistoryCount,
   filterHistory,
   getOverviewStats,
   getModeStats,
   getDailyTrend,
   getStreak,
   clearAll,
+  clearHistory,
+  buildHistoryExport,
+  exportHistoryJSON,
+  HISTORY_SCHEMA_VERSION,
+  EXPORT_FORMAT_VERSION,
 };

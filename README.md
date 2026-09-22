@@ -30,6 +30,7 @@ Java、Python、C++、JavaScript、TypeScript、Linux Shell、SQL
 - 响应式设计，适配桌面和移动端
 
 ### 学习体系
+- **训练历史** — 本机 localStorage：列表 / 清空 / 导出 JSON（上限 500 条，无云同步）
 - **成就系统** — 完成特定目标解锁成就
 - **技能树** — 可视化技能掌握进度
 - **遗忘曲线复习** — 基于艾宾浩斯曲线智能复习
@@ -132,23 +133,41 @@ codedrill/
 
 ## 开发状态
 
-> **当前状态**：历史记录功能暂缓开发。后续将更换全新 UI 和架构，进行彻底重构。
+> **学习记录（历史）**：已落地**最小稳定存储**（localStorage + 列表/清空/导出 JSON），并附单测。  
+> **完整 UI/架构「彻底重构」已冻结**——不在当前范围；若未来重做会另开 Issue，不阻塞现有功能。
+
+### 学习记录能力与限制（诚实声明）
+
+| 能力 | 状态 | 说明 |
+|------|------|------|
+| 列表 / 筛选 / 分页 | ✅ | `/history` 页；按模式、语言过滤 |
+| 导出 JSON | ✅ | History 页或设置页；含 schemaVersion 与 limits 说明 |
+| 导出 CSV / 全量备份 JSON | ✅ | 设置页「数据管理」 |
+| 导入备份 JSON | ✅ | 设置页 |
+| 清空历史 / 清除全部数据 | ✅ | History 页「清空历史」；设置页「清除所有数据」 |
+| 持久化后端 | localStorage | `codedrill_history` / `codedrill_stats`，上限 **500** 条 |
+| 云同步 / 账号 | ❌ 未实现 | 换浏览器、清站点数据即丢失；请自行导出备份 |
+| IndexedDB / SQLite | ❌ 未实现 | 架构冻结，不承诺 |
+| Electron/Android 原生文件落盘 | ❌ 未实现 | 当前与 Web 同用 WebView localStorage |
 
 ## 多端完成度矩阵（诚实声明）
 
-| 平台 | 状态 | 说明 |
-|------|------|------|
-| Web / 本机浏览器 | 主路径 | Vite 构建；GitHub Pages 预览功能受限 |
-| Windows（Electron） | 可构建 | `electron/` + `electron-builder`；**应用图标未配置** |
-| Android（Capacitor） | 骨架/部分 | 存在 `android/` 与 capacitor 配置；完整度以本机验证为准 |
-| iOS | 未承诺 | 本 README 不声称可用 |
+| 平台 | 状态 | 训练核心 | 学习记录 | 说明 |
+|------|------|----------|----------|------|
+| Web / 本机浏览器 | 主路径 | ✅ | ✅ localStorage | Vite 构建；GitHub Pages 可预览，历史随浏览器存储 |
+| Windows（Electron） | 可构建 | ✅ | ✅ 同 Web localStorage | `electron/` + `electron-builder`；便携版；图标见 Issue #3 |
+| Android（Capacitor） | 骨架/部分 | ⚠️ 以本机验证为准 | ⚠️ WebView localStorage | 有 `android/` 与 capacitor 配置；**不承诺**商店级 APK |
+| iOS | 未承诺 | ❌ | ❌ | 本 README 不声称可用 |
+| 云同步 / 多设备 | 未实现 | — | ❌ | 无后端账号体系 |
+
+> 矩阵原则：只写本机/CI 可复现的能力；避免「✅ 完整支持」式过度声称。
 
 ## 已知问题（跟踪于 Issues）
 
-- 主题图构建解析 → Issue #2
-- Electron 应用图标 → Issue #3
-- SRS/评分核心测试 → Issue #4
-- 历史记录功能暂缓，后续可能重构
+- 主题图构建解析 → Issue #2（已关闭）
+- Electron 应用图标 → Issue #3（已关闭）
+- SRS/评分核心测试 → Issue #4（已关闭）
+- 历史「彻底重构」→ **冻结**；现有最小稳定存储见上文（范围与诚实性由 Issue #1 跟踪）
 
 
 ## 免责声明

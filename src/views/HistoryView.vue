@@ -47,12 +47,30 @@
         </select>
         <button
           class="btn"
+          :disabled="history.length === 0"
+          @click="exportHistory"
+        >
+          导出 JSON
+        </button>
+        <button
+          class="btn btn-danger"
+          :disabled="history.length === 0"
+          @click="confirmClear"
+        >
+          清空历史
+        </button>
+        <button
+          class="btn"
           @click="goHome"
         >
           返回首页
         </button>
       </div>
     </div>
+
+    <p class="storage-hint">
+      记录保存在本机浏览器 localStorage（上限 500 条），无云同步。清除站点数据或换浏览器不会迁移。
+    </p>
 
     <!-- 统计概览 -->
     <div class="overview-grid">
@@ -274,7 +292,8 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { getHistory } from "@/lib/recordManager";
+import { getHistory, clearHistory } from "@/lib/recordManager";
+import { exportHistoryJSONFile } from "@/lib/exportService";
 import TrendChart from "@/components/TrendChart.vue";
 
 const router = useRouter();
@@ -409,6 +428,23 @@ function showDetail(record) {
   selectedRecord.value = record;
 }
 
+function exportHistory() {
+  const n = exportHistoryJSONFile();
+  if (n === 0) {
+    return;
+  }
+}
+
+function confirmClear() {
+  if (!window.confirm(`确认清空全部 ${history.value.length} 条训练历史？此操作不可恢复。建议先导出 JSON。`)) {
+    return;
+  }
+  const removed = clearHistory();
+  history.value = [];
+  selectedRecord.value = null;
+  window.alert(`已清空 ${removed} 条历史记录`);
+}
+
 function goHome() {
   router.push("/");
 }
@@ -443,6 +479,17 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: var(--space-3);
+}
+
+.storage-hint {
+  font-size: var(--text-xs);
+  color: var(--text-400);
+  margin-bottom: var(--space-4);
+}
+
+.btn-danger {
+  border-color: var(--incorrect);
+  color: var(--incorrect);
 }
 
 .filter-select {

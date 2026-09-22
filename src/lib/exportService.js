@@ -2,7 +2,7 @@
  * 数据导出工具
  */
 
-import { getHistory } from "./recordManager";
+import { getHistory, buildHistoryExport, clearHistory } from "./recordManager";
 import { storage } from "./utils";
 import { STORAGE_KEYS } from "./constants";
 
@@ -11,7 +11,7 @@ const FAVORITES_KEY = "favorite_questions";
 const SRS_KEY = "srs_cards";
 
 /**
- * 导出训练记录为 JSON
+ * 导出训练记录为 JSON（全量备份：stats/skills/achievements/history/…）
  */
 export function exportToJSON() {
   const history = getHistory(1000);
@@ -36,6 +36,16 @@ export function exportToJSON() {
 
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
   downloadBlob(blob, `codedrill_export_${getDateStr()}.json`);
+}
+
+/**
+ * 仅导出训练历史 JSON（History 页）
+ */
+export function exportHistoryJSONFile() {
+  const payload = buildHistoryExport();
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  downloadBlob(blob, `codedrill_history_${getDateStr()}.json`);
+  return payload.count;
 }
 
 /**
@@ -147,7 +157,9 @@ function getDateStr() {
 
 export default {
   exportToJSON,
+  exportHistoryJSONFile,
   exportToCSV,
   importFromJSON,
   clearAllData,
+  clearHistory,
 };

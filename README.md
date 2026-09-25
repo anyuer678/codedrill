@@ -12,6 +12,9 @@
 
 支持 Web、Windows、Android 三端运行。通过代码临摹、填空、改错等训练模式，帮助开发者形成编程肌肉记忆。
 
+<p align="center"><img src="preview.png" alt="CodeDrill 训练主界面预览" width="800"></p>
+
+
 ## 功能特性
 
 ### 训练模式

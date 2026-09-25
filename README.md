@@ -1,5 +1,7 @@
 # CodeDrill
 
+[![Tests](https://github.com/anyuer678/codedrill/actions/workflows/test.yml/badge.svg)](https://github.com/anyuer678/codedrill/actions/workflows/test.yml)
+
 > **状态**：`portfolio` · 离线编程训练系统 · **多端完成度不一**（以本机/Windows 构建为主）  
 > 已知问题与范围以 README 后文与 Issues 为准；训练核心（临摹/填空/改错 + SRS）可本地运行。  
 > 在线 Pages 预览功能受限（见下方说明）。

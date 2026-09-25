@@ -1,4 +1,5 @@
 # CodeDrill
+[English](README.en.md) | 简体中文
 
 [![Tests](https://github.com/anyuer678/codedrill/actions/workflows/test.yml/badge.svg)](https://github.com/anyuer678/codedrill/actions/workflows/test.yml)
 

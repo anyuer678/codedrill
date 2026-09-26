@@ -1,19 +1,21 @@
+<div align="center">
+
 # CodeDrill
+
+**离线编程训练系统**——代码临摹 / 填空 / 改错 + SRS 间隔复习，帮助开发者形成编程肌肉记忆
+
 [English](README.en.md) | 简体中文
 
 [![Tests](https://github.com/anyuer678/codedrill/actions/workflows/test.yml/badge.svg)](https://github.com/anyuer678/codedrill/actions/workflows/test.yml)
+[![GitHub Pages](https://img.shields.io/badge/%F0%9F%8C%90-%E5%9C%A8%E7%BA%BF%E9%A2%84%E8%A7%88-2ea44f)](https://anyuer678.github.io/codedrill/)
+
+</div>
 
 > **状态**：`portfolio` · 离线编程训练系统 · **多端完成度不一**（以本机/Windows 构建为主）  
 > 已知问题与范围以 README 后文与 Issues 为准；训练核心（临摹/填空/改错 + SRS）可本地运行。  
-> 在线 Pages 预览功能受限（见下方说明）。
+> ⚠️ **在线预览功能受限**：部分交互（如离线训练数据持久化、TTS 语音合成、Android/iOS 原生功能）在 GitHub Pages 静态环境下不可用，建议下载安装包获得完整体验。
 
-
-[![GitHub Pages](https://img.shields.io/badge/%F0%9F%8C%90-%E5%9C%A8%E7%BA%BF%E9%A2%84%E8%A7%88-2ea44f)](https://anyuer678.github.io/codedrill/)
-> ⚠️ **在线预览功能受限**：部分交互（如离线训练数据持久化、TTS 语音合成、Android/iOS 原生功能）在 GitHub Pages 静态环境下不可用。建议下载安装包以获得完整体验。
-
-**离线编程训练系统** — 最终版
-
-支持 Web、Windows、Android 三端运行。通过代码临摹、填空、改错等训练模式，帮助开发者形成编程肌肉记忆。
+支持 Web、Windows、Android 三端运行。
 
 <p align="center"><img src="preview.png" alt="CodeDrill 训练主界面预览" width="800"></p>
 

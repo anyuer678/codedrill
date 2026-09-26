@@ -20,3 +20,6 @@ android/.gradle/
 android/capacitor-cordova-libs/
 electron/dist/
 electron/out/
+
+# dev backup leftovers (S75 cleanup)
+*.bak

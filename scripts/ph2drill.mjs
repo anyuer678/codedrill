@@ -79,7 +79,7 @@ function toCodedrillLang(raw, fallback) {
  * 转换核心：polycodehub 题解数组 → codedrill 自定义题库数组
  * 语言优先级：--lang 强制指定 > 代码块围栏 > 题解 language 字段 > fallbackLang
  * @param {Array} solutions 题解导出数组
- * @param {object} [opts] { forceLang?, fallbackLang?, includePending? }
+ * @param {object} [opts] { forceLang?, fallbackLang?, includePending?, problemId? }
  * @returns {{ questions: Array, skipped: Array<{ id: *, reason: string }> }}
  */
 export function convertSolutions(solutions, opts = {}) {
@@ -109,11 +109,13 @@ export function convertSolutions(solutions, opts = {}) {
       || toCodedrillLang(s?.language, null)
       || toCodedrillLang(fallbackLang, "Python");
     const difficulty = DIFF_MAP[String(s?.problem_difficulty || "").toUpperCase()] || 1;
-    const problemRef = s?.problem_id != null ? `#${s.problem_id}` : "未知题目";
+    // problem_id 来源优先级：题解自带 > CLI --problem-id（/problems/:id/solutions 端点不带该字段）
+    const problemId = s?.problem_id ?? opts.problemId ?? null;
+    const problemRef = problemId != null ? `#${problemId}` : "未知题目";
 
     questions.push({
       schemaVersion: SCHEMA_VERSION,
-      id: `ph_${s?.problem_id ?? "x"}_${s?.id ?? Date.now()}`,
+      id: `ph_${problemId ?? "x"}_${s?.id ?? Date.now()}`,
       language,
       module: inferModule(block.code),
       type: "copy",
@@ -140,17 +142,18 @@ function isMain() {
 
 if (isMain()) {
   const args = process.argv.slice(2);
-  const flags = { out: "drill.custom.json", lang: null, includePending: false };
+  const flags = { out: "drill.custom.json", lang: null, includePending: false, problemId: null };
   const positional = [];
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "-o" || args[i] === "--out") {flags.out = args[++i];}
     else if (args[i] === "--lang") {flags.lang = args[++i];}
     else if (args[i] === "--include-pending") {flags.includePending = true;}
+    else if (args[i] === "--problem-id") {flags.problemId = Number(args[++i]);}
     else {positional.push(args[i]);}
   }
 
   if (positional.length < 1) {
-    console.error("用法: node scripts/ph2drill.mjs <solutions.json> [-o out.json] [--lang Python] [--include-pending]");
+    console.error("用法: node scripts/ph2drill.mjs <solutions.json> [-o out.json] [--lang Python] [--problem-id 5] [--include-pending]");
     process.exit(2);
   }
 
@@ -160,6 +163,7 @@ if (isMain()) {
       forceLang: flags.lang,
       fallbackLang: "Python",
       includePending: flags.includePending,
+      problemId: flags.problemId,
     });
     writeFileSync(flags.out, JSON.stringify(questions, null, 2) + "\n", "utf8");
 

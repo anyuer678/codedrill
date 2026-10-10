@@ -118,6 +118,24 @@ describe("convertSolutions", () => {
     expect(q.id).toBe("ph_x_10");
   });
 
+  it("CLI --problem-id 补全 /problems/:id/solutions 导出缺失的字段（真实端点实测）", () => {
+    // 该端点 items 不带 problem_id/problem_difficulty —— 与线上实测一致
+    const { questions } = convertSolutions(
+      [{ id: 1, title: "反转字符串：Python 切片一行解", content: "```python\ns = input()\nprint(s[::-1])\n```" }],
+      { problemId: 5 }
+    );
+    expect(questions[0].id).toBe("ph_5_1");
+    expect(questions[0].explanation).toContain("#5");
+  });
+
+  it("题解自带 problem_id 优先于 CLI --problem-id", () => {
+    const { questions } = convertSolutions(
+      [{ id: 2, problem_id: 9, content: "```py\na=1\n```" }],
+      { problemId: 5 }
+    );
+    expect(questions[0].id).toBe("ph_9_2");
+  });
+
   it("非数组输入直接抛 TypeError", () => {
     expect(() => convertSolutions({ id: 1 })).toThrow(TypeError);
   });

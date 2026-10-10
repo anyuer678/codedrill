@@ -124,10 +124,20 @@ export function createBlanks(code, blankPositions) {
     const pattern = getBlankPattern(pos.type);
     if (!pattern) {continue;}
 
-    const match = result.match(pattern.regex);
+    // 'd' flag（ES2022）暴露各捕获组的精确下标（match.indices）——按组位置
+    // 挖空。此前用字符串字面 replace(match[group], "___") 会命中首个同字符
+    // 子串（`int i` → `___nt i`，把 int 的 i 挖掉），答案与挖空错位恒错。
+    const flags = `${(pattern.regex.flags || "").replace(/[gy]/g, "")  }d`;
+    const match = result.match(new RegExp(pattern.regex.source, flags));
     if (match) {
-      answers.push({ type: pos.type, answer: match[pattern.group] });
-      result = result.replace(match[pattern.group], "___");
+      const answer = match[pattern.group];
+      // indices 是相对原始字符串的绝对下标（MDN），无需再加 match.index
+      const idx = match.indices && match.indices[pattern.group];
+      if (answer !== undefined && idx) {
+        const [gs, ge] = idx;
+        result = `${result.slice(0, gs)  }___${  result.slice(ge)}`;
+        answers.push({ type: pos.type, answer });
+      }
     }
   }
 

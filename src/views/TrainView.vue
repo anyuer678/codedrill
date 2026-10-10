@@ -254,6 +254,8 @@ const hint = computed(() => {
 const refCode = computed(() => {
   const q = trainingStore.currentQuestion;
   if (!q) {return "";}
+  // fill：参考 = 原码（题目区 explanation 展示挖空码），用户照抄还原后的完整代码
+  if (mode.value === "fill") {return q.original_code || q.code;}
   return mode.value === "debug" ? q.code_with_bug : q.code;
 });
 

@@ -178,6 +178,15 @@ codedrill/
 - 历史「彻底重构」→ **冻结**；现有最小稳定存储见上文（范围与诚实性由 Issue #1 跟踪）
 
 
+## 生态
+
+本项目属于 [作品体系](https://anyuer678.github.io/yuer.dev/map) 中的 **训练评测平台** 主线——定位为离线代码抄写训练（635 题 / 35 个题库 / SRS 记忆调度）。
+
+同一体系内相关项目：
+
+- [polycodehub](https://github.com/anyuer678/polycodehub) —— 在线判题 OJ（Cgroup 沙箱多语言评测）。与本仓库构成「离线抄写强化 + 在线真实判分」学习闭环：polycodehub 的题解代码可转换为本仓库自定义题库（`customQuestionBank` 机制现成；转换工具规划中）
+- [yuer.dev](https://github.com/anyuer678/yuer.dev) —— 作品集门面站（作品地图：https://anyuer678.github.io/yuer.dev/map）
+
 ## 免责声明
 
 本项目仅供学习交流与演示用途，不构成任何形式的商业服务或技术承诺。软件按「现状」提供，不作任何明示或暗示的保证。如您在使用过程中发现缺陷或问题，欢迎通过 [GitHub Issues](https://github.com/anyuer678/codedrill/issues) 反馈，但作者不因使用本软件所直接或间接产生的任何损失承担责任。

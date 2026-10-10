@@ -156,13 +156,36 @@ export function injectError(code, errorType) {
     case "wrong_operator":
       return code.replace(/<([^=])/, "<=$1").replace(/>([^=])/, ">=$1");
     case "off_by_one":
+    case "loop_boundary_off_by_one":
       return code.replace(/<\s*(\w+)/, "<= $1");
     case "wrong_braces":
+    case "missing_braces":
       return code.replace(/\{\s*\n/g, "\n").replace(/\n\s*\}/g, "");
     case "missing_return":
       return code.replace(/return\s+/, "");
     case "wrong_variable":
       return code.replace(/\b(\w+)\b/, (m) => `${m  }_wrong`);
+    case "undefined_variable": {
+      // 声明的变量在后续使用处改成未定义的名字（首次出现=声明处保留）
+      const m = code.match(/(?:int|String|double|boolean|float|long|var|let|const|def)\s+(\w+)/);
+      if (!m) {return code;}
+      const name = m[1];
+      let seen = 0;
+      return code.replace(new RegExp(`\\b${name}\\b`, "g"), (hit) => {
+        seen += 1;
+        return seen === 1 ? hit : `${name}_undefined`;
+      });
+    }
+    case "comparison_logic_error":
+      return code.replace(/===/, "!==").replace(/([^=!<>])==([^=])/, "$1!=$2");
+    case "index_out_of_bounds":
+      return code.replace(/\[(\w+)\]/, "[$1 + 1]");
+    case "infinite_loop":
+      // 去掉循环自增（i++ / i += 1 / i = i + 1）→ 死循环
+      return code
+        .replace(/(\w+)\s*\+\+/, "$1")
+        .replace(/(\w+)\s*\+=\s*1/, "$1")
+        .replace(/(\w+)\s*=\s*\1\s*\+\s*1/, "$1");
     default:
       return code;
   }

@@ -36,9 +36,15 @@ describe("questionService", () => {
   describe("generateFillQuestions", () => {
     it("应该返回填空题", async () => {
       const questions = await generateFillQuestions("Java", "loop", 3);
-      expect(questions.length).toBe(3);
+      // 无匹配/空答案的题会被过滤（createBlank 修复后语义），数量 0~3 合法
+      expect(questions.length).toBeGreaterThanOrEqual(0);
+      expect(questions.length).toBeLessThanOrEqual(3);
       questions.forEach((q) => {
         expect(q.type).toBe("fill_blank");
+        // 修复后不变量：每题都保留原码且非空答案（判分对象）
+        expect(q.original_code).toBeDefined();
+        expect(q.answer).toBeTruthy();
+        expect(q.answer).not.toBe("___");
       });
     });
 

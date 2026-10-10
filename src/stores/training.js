@@ -126,7 +126,9 @@ export const useTrainingStore = defineStore("training", () => {
         correct = normalizeCode(answer, compareOptions) === normalizeCode(q.code, compareOptions);
         break;
       case "fill":
-        correct = normalizeCode(answer, compareOptions) === normalizeCode(q.answer, compareOptions);
+        // 判分对象 = 挖空前的完整原码（q.code 已是挖空版；original_code 由
+        // questionService 保留）。此前误比单空答案 → 全文提交恒错。
+        correct = normalizeCode(answer, compareOptions) === normalizeCode(q.original_code || q.code, compareOptions);
         break;
       case "debug":
         correct = normalizeCode(answer, compareOptions) === normalizeCode(q.correct_code, compareOptions);
@@ -141,7 +143,7 @@ export const useTrainingStore = defineStore("training", () => {
       timeSpent,
       speedRating: getSpeedRating(timeSpent, q.difficulty || 1),
       submitted: answer,
-      expected: mode.value === "debug" ? q.correct_code : q.code,
+      expected: mode.value === "debug" ? q.correct_code : (mode.value === "fill" ? (q.original_code || q.code) : q.code),
       explanation: q.explanation,
     };
 

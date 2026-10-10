@@ -184,7 +184,11 @@ codedrill/
 
 同一体系内相关项目：
 
-- [polycodehub](https://github.com/anyuer678/polycodehub) —— 在线判题 OJ（Cgroup 沙箱多语言评测）。与本仓库构成「离线抄写强化 + 在线真实判分」学习闭环：polycodehub 的题解代码可转换为本仓库自定义题库（`customQuestionBank` 机制现成；转换工具规划中）
+- [polycodehub](https://github.com/anyuer678/polycodehub) —— 在线判题 OJ（Cgroup 沙箱多语言评测）。与本仓库构成「在线真实判分 → 离线抄写强化」学习闭环：polycodehub 题解（approved）导出 JSON 后，用本仓库自带的 [`scripts/ph2drill.mjs`](scripts/ph2drill.mjs) 一键转换为自定义题库，在「自定义题库」页导入即可抄写训练（带单测，CI 覆盖）
+
+  ```bash
+  node scripts/ph2drill.mjs solutions.json -o drill.custom.json --lang Python
+  ```
 - [yuer.dev](https://github.com/anyuer678/yuer.dev) —— 作品集门面站（作品地图：https://anyuer678.github.io/yuer.dev/map）
 
 ## 免责声明

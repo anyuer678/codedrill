@@ -293,11 +293,12 @@ const canAdd = computed(() => {
 });
 
 const filteredQuestions = computed(() => {
-  return getCustomQuestions({
-    language: filterLang.value || undefined,
-    module: filterModule.value || undefined,
-    limit: 100,
-  });
+  // 基于 questionList ref 本地过滤：getCustomQuestions 读 localStorage（非响应式），
+  // 直接放 computed 里会在导入/添加后永不重算，列表停留在空态（实测踩中）
+  let list = questionList.value;
+  if (filterLang.value) {list = list.filter((q) => q.language === filterLang.value);}
+  if (filterModule.value) {list = list.filter((q) => q.module === filterModule.value);}
+  return list.slice(0, 100);
 });
 
 function loadQuestions() {

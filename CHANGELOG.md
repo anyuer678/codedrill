@@ -1,6 +1,19 @@
-﻿# Changelog
+# Changelog
 
 All notable changes to this project will be documented in this file.
+
+## v1.2.0 (2026-10-10)
+
+### 新功能
+- **ph2drill 题解转换器**（#34）：polycodehub approved 题解 → 本仓自定义题库 JSON，20 项单测；与 polycodehub 构成「真实判分 → 离线抄写强化」学习闭环
+- 自定义题库列表修复（#34）：导入/添加后列表即时刷新（原 computed 依赖 localStorage 非响应式，导入成功后停留空态）
+
+### 修复
+- **判分链修复**（#26）：fill/debug 题型计分与错误注入修复
+
+### 变更
+- Electron 39 → 41（#25）
+- README 生态节：三主线作品集联动说明（#33）；vue 3.5.42 安全修复（#32）及多项依赖升级
 
 ## Unreleased
 

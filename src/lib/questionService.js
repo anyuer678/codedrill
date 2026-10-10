@@ -139,18 +139,22 @@ export async function generateFillQuestions(language, module, count = 10) {
   const baseQuestions = await getQuestions(language, module, count);
   const blankTypes = state.fillPoints;
 
-  return baseQuestions.map((q, i) => {
-    const blankType = blankTypes[i % blankTypes.length];
-    const { code, answers } = createBlank(q.code, blankType);
+  return baseQuestions
+    .map((q, i) => {
+      const blankType = blankTypes[i % blankTypes.length];
+      const { code, answers } = createBlank(q.code, blankType);
 
-    return {
-      ...q,
-      type: "fill_blank",
-      code,
-      answer: answers.length > 0 ? answers[0].answer : "",
-      blank_type: blankType.id,
-    };
-  });
+      return {
+        ...q,
+        type: "fill_blank",
+        code,
+        original_code: q.code,
+        answer: answers.length > 0 ? answers[0].answer : "",
+        blank_type: blankType.id,
+        explanation: `填空题：将 ___ 还原为正确代码\n${code}`,
+      };
+    })
+    .filter((q) => q.answer && q.answer !== "___" && q.original_code !== q.code);
 }
 
 export async function generateDebugQuestions(language, count = 10) {
@@ -210,6 +214,14 @@ function generateFallbackQuestions(language, module, count) {
   return questions;
 }
 
+// 按 match 捕获组的真实位置替换为 ___。此前用 String.replace(match[1], ...)
+// 做"首个字面匹配"替换会错位（如 "int i = 0;" 挖 i → "___nt i = 0;"）。
+function blankAt(line, match) {
+  const idx = match.index + match[0].indexOf(match[1]);
+  if (idx < 0 || idx + match[1].length > line.length) {return line;}
+  return line.slice(0, idx) + "___" + line.slice(idx + match[1].length);
+}
+
 function createBlank(code, blankType) {
   const lines = code.split("\n");
   const answers = [];
@@ -224,7 +236,7 @@ function createBlank(code, blankType) {
         const match = line.match(/(?:int|String|double|boolean|var|let|def)\s+(\w+)/);
         if (match) {
           answers.push({ type: "variable", answer: match[1] });
-          lines[i] = line.replace(match[1], "___");
+          lines[i] = blankAt(line, match);
           modified = true;
         }
         break;
@@ -234,7 +246,7 @@ function createBlank(code, blankType) {
         const match = line.match(/(?:if|while|for)\s*\((.+?)\)/);
         if (match) {
           answers.push({ type: "condition", answer: match[1] });
-          lines[i] = line.replace(match[1], "___");
+          lines[i] = blankAt(line, match);
           modified = true;
         }
         break;
@@ -243,7 +255,7 @@ function createBlank(code, blankType) {
         const match = line.match(/([+\-*/%&|^<>=!]+)/);
         if (match && match[1].length <= 2) {
           answers.push({ type: "operator", answer: match[1] });
-          lines[i] = line.replace(match[1], "___");
+          lines[i] = blankAt(line, match);
           modified = true;
         }
         break;
@@ -252,7 +264,7 @@ function createBlank(code, blankType) {
         const match = line.match(/(?:int|String|double|boolean|float|long)\s+(\w+)\s*[,)]/);
         if (match) {
           answers.push({ type: "param", answer: match[1] });
-          lines[i] = line.replace(match[1], "___");
+          lines[i] = blankAt(line, match);
           modified = true;
         }
         break;
@@ -261,7 +273,7 @@ function createBlank(code, blankType) {
         const match = line.match(/(?:public|private|protected|static|\s)+[\w<>\[\]]+\s+(\w+)\s*\(/);
         if (match) {
           answers.push({ type: "method", answer: match[1] });
-          lines[i] = line.replace(match[1], "___");
+          lines[i] = blankAt(line, match);
           modified = true;
         }
         break;
@@ -270,7 +282,7 @@ function createBlank(code, blankType) {
         const match = line.match(/return\s+(.+?);/);
         if (match) {
           answers.push({ type: "return", answer: match[1] });
-          lines[i] = line.replace(match[1], "___");
+          lines[i] = blankAt(line, match);
           modified = true;
         }
         break;
@@ -279,7 +291,7 @@ function createBlank(code, blankType) {
         const match = line.match(/\[(\w+)\]/);
         if (match) {
           answers.push({ type: "index", answer: match[1] });
-          lines[i] = line.replace(match[1], "___");
+          lines[i] = blankAt(line, match);
           modified = true;
         }
         break;
@@ -288,7 +300,7 @@ function createBlank(code, blankType) {
         const match = line.match(/\b(\w+)\b/);
         if (match) {
           answers.push({ type: "identifier", answer: match[1] });
-          lines[i] = line.replace(match[1], "___");
+          lines[i] = blankAt(line, match);
           modified = true;
         }
       }

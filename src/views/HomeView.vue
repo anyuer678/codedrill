@@ -106,7 +106,7 @@
             </div>
           </div>
           <div class="filter-actions">
-            <select v-model.number="questionCount" class="count-select">
+            <select v-model.number="questionCount" class="count-select" aria-label="每次训练题数">
               <option :value="5">5 题</option>
               <option :value="10">10 题</option>
               <option :value="15">15 题</option>

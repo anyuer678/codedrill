@@ -4,6 +4,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      # Capacitor 大版本须 core/android/ios 全家 lockstep（core 8 与 android 6 peer 冲突，CI 实证 ERESOLVE），整组升级时解除。
+      - dependency-name: "@capacitor/core"
+        update-types:
+          - "version-update:semver-major"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

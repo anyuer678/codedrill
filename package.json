@@ -44,7 +44,7 @@
     "jsdom": "^25.0.1",
     "electron": "44.7.0",
     "electron-builder": "^26.15.3",
-    "concurrently": "^9.2.5",
+    "concurrently": "^10.0.5",
     "wait-on": "^9.5.1",
     "@capacitor/cli": "^8.5.3",
     "@capacitor/core": "^6.2.0",

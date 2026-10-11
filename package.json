@@ -42,7 +42,7 @@
     "vitest": "^5.0.1",
     "@vue/test-utils": "^2.4.6",
     "jsdom": "^25.0.1",
-    "electron": "41.10.6",
+    "electron": "44.7.0",
     "electron-builder": "^26.15.3",
     "concurrently": "^9.2.5",
     "wait-on": "^9.5.1",

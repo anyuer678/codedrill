@@ -128,7 +128,6 @@ export async function getQuestions(language, module, count = 10, difficulty = nu
   }
 
   if (pool.length === 0) {
-    console.log("Pool empty, returning fallback questions");
     return generateFallbackQuestions(language, module, count);
   }
 

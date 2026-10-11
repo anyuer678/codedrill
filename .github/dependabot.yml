@@ -9,6 +9,9 @@ updates:
       - dependency-name: "@capacitor/core"
         update-types:
           - "version-update:semver-major"
+      - dependency-name: "@capacitor/android"
+        update-types:
+          - "version-update:semver-major"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

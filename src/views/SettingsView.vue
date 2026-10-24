@@ -4,12 +4,9 @@
       <h1 class="page-title">
         设置
       </h1>
-      <button
-        class="btn"
-        @click="goHome"
-      >
+      <KbButton @click="goHome">
         返回首页
-      </button>
+      </KbButton>
     </div>
 
     <div class="settings-grid">
@@ -20,51 +17,32 @@
         </h3>
         <div class="setting-row">
           <label class="setting-label">默认语言</label>
-          <select
+          <KbSelect
             v-model="settings.language"
-            class="select"
-          >
-            <option
-              v-for="lang in languages"
-              :key="lang"
-              :value="lang"
-            >
-              {{ lang }}
-            </option>
-          </select>
+            :options="languageOptions"
+            class="kb-w200"
+          />
         </div>
         <div class="setting-row">
           <label class="setting-label">每日目标（题）</label>
-          <input
-            v-model.number="settings.dailyGoal"
-            class="input"
+          <KbInput
             type="number"
-            min="5"
-            max="100"
-          >
+            :model-value="String(settings.dailyGoal)"
+            class="kb-w200"
+            @update:model-value="v => settings.dailyGoal = clampGoal(v)"
+          />
         </div>
         <div class="setting-row">
           <label class="setting-label">限时模式默认时长</label>
-          <select
-            v-model.number="settings.defaultTimeLimit"
-            class="select"
-          >
-            <option :value="30">
-              30秒
-            </option>
-            <option :value="60">
-              60秒
-            </option>
-            <option :value="90">
-              90秒
-            </option>
-            <option :value="120">
-              120秒
-            </option>
-          </select>
+          <KbSelect
+            v-model="settings.defaultTimeLimit"
+            :options="timeLimitOptions"
+            class="kb-w200"
+          />
         </div>
         <div class="setting-row">
           <label class="setting-label">界面主题</label>
+          <!-- 保留原生 select：主题列表依赖 optgroup 分组，KbSelect 尚无分组支持（试点决策，见 docs/KB-UI-PILOT.md） -->
           <select class="input" v-model="settings.theme" @change="saveSettings">
             <optgroup label="机械工坊">
               <option value="codedrill">工坊·默认</option>
@@ -102,12 +80,12 @@
           </select>
         </div>
         <div class="save-row">
-          <button
-            class="btn btn-primary"
+          <KbButton
+            type="primary"
             @click="saveSettings"
           >
             保存设置
-          </button>
+          </KbButton>
           <span
             v-if="savedMessage"
             class="saved-msg"
@@ -122,20 +100,17 @@
         </h3>
         <div class="setting-row">
           <label class="setting-label">启用提醒</label>
-          <label class="toggle">
-            <input
-              v-model="reminder.enabled"
-              type="checkbox"
-              @change="toggleReminder"
-            >
-            <span class="toggle-slider" />
-          </label>
+          <KbSwitch
+            v-model="reminder.enabled"
+            @change="toggleReminder"
+          />
         </div>
         <div
           v-if="reminder.enabled"
           class="setting-row"
         >
           <label class="setting-label">提醒时间</label>
+          <!-- 保留原生 input[type=time]：KbInput 仅支持 text/password/number -->
           <input
             v-model="reminder.time"
             type="time"
@@ -148,12 +123,12 @@
           class="setting-row"
         >
           <label class="setting-label">通知权限</label>
-          <button
-            class="btn btn-sm"
+          <KbButton
+            size="small"
             @click="requestPermission"
           >
             {{ permissionStatus }}
-          </button>
+          </KbButton>
         </div>
       </div>
 
@@ -173,40 +148,35 @@
           </div>
         </div>
         <div class="action-group">
-          <button
-            class="btn"
-            @click="exportJSON"
-          >
+          <KbButton @click="exportJSON">
             导出 JSON
-          </button>
-          <button
-            class="btn"
-            @click="exportCSV"
-          >
+          </KbButton>
+          <KbButton @click="exportCSV">
             导出 CSV
-          </button>
+          </KbButton>
         </div>
         <div class="action-group">
-          <label class="btn import-btn">
+          <KbButton @click="$refs.importFileInput.click()">
             导入数据
-            <input
-              type="file"
-              accept=".json"
-              hidden
-              @change="importData"
-            >
-          </label>
+          </KbButton>
+          <input
+            ref="importFileInput"
+            type="file"
+            accept=".json"
+            hidden
+            @change="importData"
+          >
         </div>
         <div class="danger-zone">
           <div class="danger-label">
             危险操作
           </div>
-          <button
-            class="btn btn-danger"
+          <KbButton
+            type="danger"
             @click="confirmClear"
           >
             清除所有数据
-          </button>
+          </KbButton>
         </div>
       </div>
 
@@ -217,12 +187,12 @@
         </h3>
         <div class="setting-row">
           <label class="setting-label">导出数据</label>
-          <button
-            class="btn btn-sm"
+          <KbButton
+            size="small"
             @click="exportJSON"
           >
             导出 JSON
-          </button>
+          </KbButton>
         </div>
         <div class="setting-row">
           <label class="setting-label">导入数据</label>
@@ -234,22 +204,23 @@
               class="file-input"
               @change="importData"
             >
-            <button
-              class="btn btn-sm"
+            <KbButton
+              size="small"
               @click="$refs.fileInput.click()"
             >
               选择文件
-            </button>
+            </KbButton>
           </div>
         </div>
         <div class="setting-row">
           <label class="setting-label">清除所有数据</label>
-          <button
-            class="btn btn-sm btn-danger"
+          <KbButton
+            size="small"
+            type="danger"
             @click="confirmClear"
           >
             清除
-          </button>
+          </KbButton>
         </div>
       </div>
 
@@ -279,38 +250,29 @@
       </div>
     </div>
 
-    <!-- 确认弹窗 -->
-    <div
-      v-if="showConfirm"
-      class="modal-overlay"
-      @click="showConfirm = false"
+    <!-- 确认弹窗（KbDialog，Teleport 到 body；主题桥接变量声明在 body 上故 Teleport 后仍生效） -->
+    <KbDialog
+      v-model="showConfirm"
+      title="确认操作"
+      :width="400"
     >
-      <div
-        class="modal"
-        @click.stop
-      >
-        <div class="modal-header">
-          确认操作
-        </div>
-        <div class="modal-body">
-          {{ confirmMessage }}
-        </div>
-        <div class="modal-actions">
-          <button
-            class="btn"
-            @click="showConfirm = false"
-          >
-            取消
-          </button>
-          <button
-            class="btn btn-danger"
-            @click="confirmAction"
-          >
-            确认
-          </button>
-        </div>
-      </div>
-    </div>
+      {{ confirmMessage }}
+      <template #footer>
+        <KbButton
+          size="small"
+          @click="showConfirm = false"
+        >
+          取消
+        </KbButton>
+        <KbButton
+          size="small"
+          type="danger"
+          @click="confirmAction"
+        >
+          确认
+        </KbButton>
+      </template>
+    </KbDialog>
   </div>
 </template>
 
@@ -321,6 +283,9 @@ import { storage } from "@/lib/utils";
 import { STORAGE_KEYS, LANGUAGES } from "@/lib/constants";
 import { exportToJSON, exportToCSV, importFromJSON, clearAllData } from "@/lib/exportService";
 import { getReminderSettings, toggleReminder as toggleReminderService, setReminderTime, requestNotificationPermission } from "@/lib/reminder";
+import { KbButton, KbSelect, KbInput, KbSwitch, KbDialog } from "kb-ui-vue";
+import "kb-ui-vue/styles/index.css";
+import "../design-system/kb-bridge.css";
 
 const router = useRouter();
 
@@ -331,6 +296,15 @@ const settings = ref({
   defaultTimeLimit: 60,
   theme: "light",
 });
+
+const languageOptions = languages.map((lang) => ({ label: lang, value: lang }));
+const timeLimitOptions = [30, 60, 90, 120].map((s) => ({ label: `${s}秒`, value: s }));
+
+/** KbInput 返回字符串，这里转数值并夹在 [5,100]（原 min/max 语义） */
+function clampGoal(v) {
+  const n = Number(v);
+  return Number.isFinite(n) ? Math.min(100, Math.max(5, n)) : 5;
+}
 
 const reminder = ref({
   enabled: false,
@@ -510,21 +484,8 @@ onMounted(() => {
   color: var(--text-700);
 }
 
-.select, .input {
+.kb-w200 {
   width: 200px;
-  padding: var(--space-2) var(--space-3);
-  font-size: var(--text-sm);
-  font-family: var(--font);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--bg-card);
-  color: var(--text-900);
-  transition: border-color 0.2s ease;
-}
-
-.select:focus, .input:focus {
-  border-color: var(--accent-10);
-  outline: none;
 }
 
 .save-row {
@@ -540,119 +501,8 @@ onMounted(() => {
   font-weight: 500;
 }
 
-.theme-options {
-  display: flex;
-  gap: var(--space-3);
-}
-
-.theme-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3);
-  font-size: var(--text-sm);
-  font-family: var(--font);
-  background: var(--bg-card);
-  border: 2px solid var(--border);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  color: var(--text-700);
-  transition: all 0.2s ease;
-  width: 100px;
-}
-
-.theme-btn:hover {
-  border-color: var(--text-400);
-}
-
-.theme-btn.active {
-  border-color: var(--accent-10);
-  background: rgba(37, 99, 235, 0.04);
-}
-
-.theme-preview {
-  width: 60px;
-  height: 40px;
-  border-radius: 4px;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 1px;
-  border: 1px solid var(--border);
-}
-
-.light-preview .preview-bg { background: #F9FAFB; }
-.light-preview .preview-card { background: #FFFFFF; grid-row: span 2; }
-.light-preview .preview-accent { background: #2563EB; }
-
-.dark-preview .preview-bg { background: #111827; }
-.dark-preview .preview-card { background: #1F2937; grid-row: span 2; }
-.dark-preview .preview-accent { background: #3B82F6; }
-
 .data-info {
   margin-bottom: var(--space-4);
-}
-
-.toggle {
-  position: relative;
-  display: inline-block;
-  width: 44px;
-  height: 24px;
-}
-
-.toggle input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.toggle-slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--border);
-  transition: 0.3s;
-  border-radius: 24px;
-}
-
-.toggle-slider:before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: 0.3s;
-  border-radius: 50%;
-}
-
-.toggle input:checked + .toggle-slider {
-  background-color: var(--accent-10);
-}
-
-.toggle input:checked + .toggle-slider:before {
-  transform: translateX(20px);
-}
-
-.input-sm {
-  width: 120px;
-  padding: var(--space-2) var(--space-3);
-  font-size: var(--text-sm);
-  font-family: var(--font);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--bg-card);
-}
-
-.btn-sm {
-  padding: var(--space-1) var(--space-3);
-  font-size: var(--text-xs);
 }
 
 .data-row {
@@ -679,10 +529,6 @@ onMounted(() => {
   margin-bottom: var(--space-4);
 }
 
-.import-btn {
-  cursor: pointer;
-}
-
 .danger-zone {
   margin-top: var(--space-4);
   padding-top: var(--space-4);
@@ -693,16 +539,6 @@ onMounted(() => {
   font-size: var(--text-xs);
   color: var(--incorrect);
   margin-bottom: var(--space-2);
-}
-
-.btn-danger {
-  background: var(--incorrect);
-  border-color: var(--incorrect);
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #b91c1c;
 }
 
 .about-info {
@@ -727,44 +563,32 @@ onMounted(() => {
   font-weight: 500;
 }
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-}
-
-.modal {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  width: 400px;
-  max-width: 90%;
-}
-
-.modal-header {
-  font-size: var(--text-lg);
-  font-weight: 600;
-  margin-bottom: var(--space-4);
-}
-
-.modal-body {
+/* 原生残留样式（主题下拉、时间输入、file-input 仍在用；.btn/.modal 系列已由 Kb 组件取代，暂留以最小化试点 diff） */
+.select, .input {
+  width: 200px;
+  padding: var(--space-2) var(--space-3);
   font-size: var(--text-sm);
-  color: var(--text-500);
-  margin-bottom: var(--space-6);
+  font-family: var(--font);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  color: var(--text-900);
+  transition: border-color 0.2s ease;
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--space-3);
+.select:focus, .input:focus {
+  border-color: var(--accent-10);
+  outline: none;
+}
+
+.input-sm {
+  width: 120px;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  font-family: var(--font);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
 }
 
 /* 移动端响应式 */
@@ -791,25 +615,12 @@ onMounted(() => {
     gap: var(--space-2);
   }
 
-  .select, .input {
+  .select, .input, .kb-w200 {
     width: 100%;
-  }
-
-  .theme-options {
-    width: 100%;
-  }
-
-  .theme-btn {
-    flex: 1;
   }
 
   .action-group {
     flex-wrap: wrap;
-  }
-
-  .modal {
-    width: 90%;
-    padding: var(--space-4);
   }
 }
 </style>

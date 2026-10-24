@@ -1,0 +1,39 @@
+/*
+ * kb-ui ↔ codedrill 主题桥接层（试点）
+ * ---------------------------------------------------------------
+ * 把 kb-ui 的 --kb-* 设计令牌指向 codedrill 的主题变量。
+ *
+ * 为什么声明在 body 而不是 :root：
+ *   CSS 自定义属性的 var() 引用在【声明元素】处求值。codedrill 的
+ *   主题覆盖（--bg-card / --border / …）挂在 body[data-theme="…"] 上，
+ *   若桥接写在 :root，将永远取到 :root 的默认值，主题切换对 Kb 组件失效。
+ *   写在 body 上，Kb 组件（含 Teleport 到 body 的 KbDialog）随任意
+ *   codedrill 主题联动。
+ *
+ * dark 主题：kb-ui 自带的 dark.css 用 [data-theme='dark'] 覆盖 --kb-*。
+ *   本桥接与它的加载顺序决定谁先生效——两者皆为深色近似调（codedrill
+ *   dark 的 slate 系与 kb dark 同族），视觉均自洽；若要 codedrill 优先，
+ *   把本文件的 import 放在 kb-ui 样式之后（SettingsView.vue 中已如此）。
+ */
+
+body {
+  /* 语义色 */
+  --kb-color-primary: var(--btn-primary-bg, #5a6e4a);
+  --kb-color-success: var(--color-success, #5a6e4a);
+  --kb-color-warning: var(--color-warning, #c8956a);
+  --kb-color-danger: var(--color-danger, #b85450);
+  --kb-color-info: var(--color-info, #6b6b5c);
+
+  /* 表面与描边 */
+  --kb-color-bg: var(--bg-card, #faf5e8);
+  --kb-color-bg-elevated: var(--bg-card-2, #f5efe0);
+  --kb-color-border: var(--border, #d9d0b8);
+
+  /* 文字层级 */
+  --kb-color-text-1: var(--text-primary, #2c3525);
+  --kb-color-text-2: var(--text-secondary, #6b6b5c);
+  --kb-color-text-3: var(--text-muted, #9a9685);
+
+  /* 字体：跟随 codedrill 正文字体 */
+  --kb-font-family: var(--font-body, var(--font-sans, inherit));
+}

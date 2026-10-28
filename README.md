@@ -102,9 +102,11 @@ npm run build:all    # 构建全部平台
 
 | 平台 | 格式 | 状态 |
 |------|------|------|
-| Web | HTML/CSS/JS | ✅ 完整支持 |
-| Windows | EXE 便携版 | ✅ 完整支持 |
-| Android | APK | ✅ 完整支持 |
+| Web | HTML/CSS/JS | ✅ 主路径 |
+| Windows | EXE 便携版 | ✅ 可构建 |
+| Android | APK | ⚠️ 骨架/部分 |
+
+> 本表仅说明构建形态；实际能力以下方「多端完成度矩阵」为唯一口径（Android 不承诺商店级 APK，iOS 不承诺）。
 
 ## 项目结构
 

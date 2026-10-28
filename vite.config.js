@@ -14,11 +14,14 @@ export default defineConfig({
     outDir: "dist/web",
     emptyOutDir: true,
     sourcemap: false,
-    minify: "esbuild",
     rollupOptions: {
       output: {
-        manualChunks: {
-          vue: ["vue", "vue-router", "pinia"],
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (/[\\/]node_modules[\\/](vue|@vue|vue-router|pinia)[\\/]/.test(id)) {
+              return "vue";
+            }
+          }
         },
       },
     },
